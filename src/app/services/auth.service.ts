@@ -6,7 +6,7 @@ import {
     UserData,
 } from '../interfaces/userData';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
@@ -37,7 +37,27 @@ export class AuthService {
     }
 
     isLoggedIn(): boolean {
-        return !!this.getToken();
+        const token = this.getToken();
+
+        if (!token) {
+            console.log('no token');
+            return false;
+        }
+
+        try {
+            const payload = jwtDecode<JwtPayload>(token);
+
+            const timeCheck = Math.floor(Date.now() / 1000);
+            if (payload.exp <= timeCheck) {
+                this.removeToken();
+                console.log('expired token');
+                return false;
+            }
+            return true;
+        } catch {
+            this.removeToken();
+            return false;
+        }
     }
 
     registerUser(user: UserData): Observable<LoginResponse> {
@@ -71,15 +91,7 @@ export class AuthService {
         return payload.nome;
     }
 
-    getProfile() {
-        const token = this.getToken();
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`,
-        });
-
-        return this.httpClient.get(`${this.apiBackendURL}/profile`, {
-            headers,
-        });
-    }
+    // getProfile() {
+    //     return this.httpClient.get(`${this.apiBackendURL}/profile`);
+    // }
 }
