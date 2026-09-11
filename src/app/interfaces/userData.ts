@@ -14,3 +14,12 @@ export interface LoginData {
 export interface LoginResponse {
     token: string;
 }
+
+export interface JwtPayload {
+    sub: string;
+    nome: string;
+    cognome: string;
+    role: string;
+    exp: number;
+    iat: number;
+}

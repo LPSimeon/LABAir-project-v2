@@ -136,12 +136,16 @@ export class SignupComponent {
 
         console.log(this.user);
         console.log('Puoi andare');
-
         this.authService.registerUser(this.user).subscribe({
-            next: (data) => console.log('Ok', data),
+            next: (data) => {
+                console.log('Ok', data);
+                this.authService.setToken(data.token);
+                // console.log(this.authService.getToken());
+                // console.log(this.authService.isLoggedIn());
+                this.router.navigate(['/home']);
+            },
             error: (error) => console.log(error),
         });
-        this.router.navigate(['/home']);
     }
 
     ngOnDestroy() {

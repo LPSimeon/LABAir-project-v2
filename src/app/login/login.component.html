@@ -37,7 +37,11 @@
     <p class="font-1">Le credenziali non sono valide</p>
   </div>
   <!-- Mettere collegamento con il ts -->
-  <form #loginForm="ngForm" (ngSubmit)="loginUser(loginForm)" class="auth-form">
+  <form
+    #loginForm="ngForm"
+    (ngSubmit)="authenticateUser(loginForm)"
+    class="auth-form"
+  >
     <div class="contenitore-form2">
       <!-- Email -->
       <div class="voce-form tipo-1">

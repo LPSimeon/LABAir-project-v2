@@ -1,3 +1,5 @@
+<!-- Mettere il tasto logout -->
+
 @if (isCheckoutActive == false) {
   <!-- Parte mini Header -->
   <div id="mini-header" class="padding-principale">
@@ -29,10 +31,10 @@
           <a routerLink="/shoes"> Trova un negozio</a>
           <div class="linea-verticale"></div>
         </li>
-        <li>
+        <li class="li-dropdown">
           <a routerLink="/shoes">Aiuto</a>
           <!-- Mini voci ancora -->
-          <div class="contenitore-mini-voci">
+          <div class="contenitore-mini-voci aiuto">
             <div class="margini-voci-header">
               <a routerLink="/shoes" class="titolo-voci"><p>Aiuto</p></a>
               <ul>
@@ -70,11 +72,65 @@
           </div>
           <div class="linea-verticale"></div>
         </li>
-        <li>
-          <a routerLink="/signup">Unisciti a noi</a>
-          <div class="linea-verticale"></div>
-        </li>
-        <li><a routerLink="/login">Accedi</a></li>
+        @if (!isUserLoggedIn) {
+          <li>
+            <a routerLink="/signup">Unisciti a noi</a>
+            <div class="linea-verticale"></div>
+          </li>
+          <li><a routerLink="/login">Accedi</a></li>
+        } @else {
+          <li class="li-dropdown">
+            <a routerLink="/shoes">Ciao, {{ username }}</a
+            ><svg
+              aria-hidden="true"
+              class="icon-btn"
+              focusable="false"
+              viewBox="0 0 24 24"
+              role="img"
+              width="24"
+              height="24"
+              fill="none"
+              aria-label="Profile"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <path
+                stroke="#111111"
+                stroke-width="2px"
+                d="M3.75 21v-3a3.75 3.75 0 013.75-3.75h9A3.75 3.75 0 0120.25 18v3m-4.5-13.5a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+                fill="none"
+              ></path>
+            </svg>
+            <!-- Mini voci ancora -->
+            <div class="contenitore-mini-voci account">
+              <div class="margini-voci-header">
+                <a routerLink="/shoes" class="titolo-voci"><p>Account</p></a>
+                <ul>
+                  <li>
+                    <a routerLink="/shoes"><p>Profilo</p></a>
+                  </li>
+                  <li>
+                    <a routerLink="/shoes"><p>Ordini</p></a>
+                  </li>
+                  <li>
+                    <a routerLink="/shoes"><p>Preferiti</p></a>
+                  </li>
+                  <li>
+                    <a routerLink="/shoes"><p>Esperienze</p></a>
+                  </li>
+                  <li>
+                    <a routerLink="/shoes"><p>Impostazioni account</p></a>
+                  </li>
+                  <li>
+                    <button (click)="logoutUser()">
+                      <p>Esci</p>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+        }
       </ul>
     </nav>
   </div>

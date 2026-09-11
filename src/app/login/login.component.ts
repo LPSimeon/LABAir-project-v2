@@ -34,7 +34,7 @@ export class LoginComponent {
         this.pwdInputFlag = !this.pwdInputFlag;
     }
 
-    loginUser(form: NgForm) {
+    authenticateUser(form: NgForm) {
         if (form.invalid) {
             console.log('Errore');
             form.control.markAllAsTouched();
@@ -47,7 +47,7 @@ export class LoginComponent {
 
         this.authService.loginUser(this.userCredentials).subscribe({
             next: (data) => {
-                console.log('Ok', data);
+                console.log('User token', data);
                 this.router.navigate(['/home']);
             },
             error: (error) => {
