@@ -90,8 +90,4 @@ export class AuthService {
 
         return payload.nome;
     }
-
-    // getProfile() {
-    //     return this.httpClient.get(`${this.apiBackendURL}/profile`);
-    // }
 }

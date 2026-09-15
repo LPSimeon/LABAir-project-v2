@@ -3,6 +3,7 @@ import { BehaviorSubject, map, Observable } from 'rxjs';
 import { ProductData } from '../interfaces/productData';
 import { HttpClient } from '@angular/common/http';
 import { CartItem } from '../interfaces/cartItem';
+import { AuthService } from './auth.service';
 
 @Injectable({
     providedIn: 'root',
@@ -19,8 +20,12 @@ export class CartService {
     */
     private apiCartURL = 'http://localhost:3000/carrello';
     private apiBackendURL = 'http://localhost:8080/api/v1/carrello';
+    private readonly CART_KEY = 'guest_cart';
 
-    constructor(private httpClient: HttpClient) {
+    constructor(
+        private httpClient: HttpClient,
+        private authService: AuthService,
+    ) {
         this.loadCart();
     }
 
@@ -95,22 +100,41 @@ export class CartService {
                 quantita: updatedItems[itemIndex].quantita + 1,
             };
 
-            this.updateItemQuantity(
-                id,
-                updatedItems[itemIndex].quantita,
-            ).subscribe({
-                next: () => this.cartItems.next(updatedItems),
-                error: (err) =>
-                    console.log("Errore nell'aggiornamento dell'item:", err),
-            });
+            if (this.authService.isLoggedIn()) {
+                this.updateItemQuantity(
+                    id,
+                    updatedItems[itemIndex].quantita,
+                ).subscribe({
+                    next: () => this.cartItems.next(updatedItems),
+                    error: (err) =>
+                        console.log(
+                            "Errore nell'aggiornamento dell'item:",
+                            err,
+                        ),
+                });
+            } else {
+                this.cartItems.next(updatedItems);
+                this.saveGuestCart(updatedItems);
+            }
+
+            return;
         } else {
             const newItem: CartItem = { id, ...product, quantita: 1 };
+            if (this.authService.isLoggedIn()) {
+                this.addNewItem(newItem).subscribe({
+                    next: () => this.cartItems.next([...currentItems, newItem]),
+                    error: (err) =>
+                        console.log(
+                            'Errore nel caricamento del nuovo item:',
+                            err,
+                        ),
+                });
+            } else {
+                const updatedItems = [...currentItems, newItem];
 
-            this.addNewItem(newItem).subscribe({
-                next: () => this.cartItems.next([...currentItems, newItem]),
-                error: (err) =>
-                    console.log('Errore nel caricamento del nuovo item:', err),
-            });
+                this.cartItems.next(updatedItems);
+                this.saveGuestCart(updatedItems);
+            }
         }
     }
 
@@ -132,14 +156,22 @@ export class CartService {
                 quantita: item.quantita - 1,
             };
 
-            this.updateItemQuantity(
-                item.id,
-                updatedItems[itemIndex].quantita,
-            ).subscribe({
-                next: () => this.cartItems.next(updatedItems),
-                error: (err) =>
-                    console.log("Errore nell'aggiornamento dell'item:", err),
-            });
+            if (this.authService.isLoggedIn()) {
+                this.updateItemQuantity(
+                    item.id,
+                    updatedItems[itemIndex].quantita,
+                ).subscribe({
+                    next: () => this.cartItems.next(updatedItems),
+                    error: (err) =>
+                        console.log(
+                            "Errore nell'aggiornamento dell'item:",
+                            err,
+                        ),
+                });
+            } else {
+                this.cartItems.next(updatedItems);
+                this.saveGuestCart(updatedItems);
+            }
         } else {
             // if quantity = 1
             this.deleteItemFromCart(cartItem);
@@ -152,17 +184,26 @@ export class CartService {
             (item) => item.id !== cartItem.id,
         );
 
-        this.deleteItem(cartItem.id).subscribe({
-            next: () => this.cartItems.next(updatedItems),
-            error: (err) =>
-                console.log("Errore nell'eliminazione dell'item:", err),
-        });
+        if (this.authService.isLoggedIn()) {
+            this.deleteItem(cartItem.id).subscribe({
+                next: () => this.cartItems.next(updatedItems),
+                error: (err) =>
+                    console.log("Errore nell'eliminazione dell'item:", err),
+            });
+        } else {
+            this.cartItems.next(updatedItems);
+            this.saveGuestCart(updatedItems);
+        }
     }
 
     // Method to emty the cart
     emptyCart() {
         const items = this.cartItems.value;
-
+        if (!this.authService.isLoggedIn()) {
+            this.cartItems.next([]);
+            localStorage.removeItem(this.CART_KEY);
+            return;
+        }
         this.cartItems.next([]);
 
         // ForEach loop to delete every cart item
@@ -172,13 +213,36 @@ export class CartService {
     }
 
     // Method used to load cart data from the json file
-    private loadCart(): void {
-        this.getAllItems().subscribe({
-            next: (items) => this.cartItems.next(items),
-            error: (err) => {
-                console.error('Errore nel caricamento del cart:', err);
-                this.cartItems.next([]);
-            },
-        });
+    private loadCart() {
+        if (this.authService.isLoggedIn()) {
+            this.getAllItems().subscribe({
+                next: (items) => this.cartItems.next(items),
+                error: (err) => {
+                    console.error('Errore nel caricamento del cart:', err);
+                    this.cartItems.next([]);
+                },
+            });
+
+            return;
+        }
+
+        const guestCart = localStorage.getItem(this.CART_KEY);
+
+        if (!guestCart) {
+            this.cartItems.next([]);
+            return;
+        }
+
+        try {
+            const items: CartItem[] = JSON.parse(guestCart);
+            this.cartItems.next(items);
+        } catch {
+            localStorage.removeItem(this.CART_KEY);
+            this.cartItems.next([]);
+        }
+    }
+
+    private saveGuestCart(items: CartItem[]): void {
+        localStorage.setItem(this.CART_KEY, JSON.stringify(items));
     }
 }

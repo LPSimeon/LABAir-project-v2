@@ -21,5 +21,5 @@ export interface JwtPayload {
     cognome: string;
     role: string;
     exp: number;
-    iat: number;
+    iat?: number;
 }
