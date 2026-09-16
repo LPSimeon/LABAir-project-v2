@@ -8,6 +8,7 @@ import {
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
+import { CartService } from './cart.service';
 
 @Injectable({
     providedIn: 'root',
@@ -20,7 +21,10 @@ export class AuthService {
 
     loggedIn$ = this.loggedIn.asObservable();
 
-    constructor(private httpClient: HttpClient) {}
+    constructor(
+        private httpClient: HttpClient,
+        private cartService: CartService,
+    ) {}
 
     setToken(token: string) {
         localStorage.setItem(this.TOKEN_KEY, token);
@@ -72,7 +76,12 @@ export class AuthService {
                 `${this.apiBackendURL}/authenticate`,
                 loginCredentials,
             )
-            .pipe(tap((response) => this.setToken(response.token)));
+            .pipe(
+                tap((response) => {
+                    this.setToken(response.token);
+                    this.cartService.mergeGuestCart();
+                }),
+            );
     }
 
     logout() {

@@ -212,6 +212,21 @@ export class CartService {
         });
     }
 
+    mergeGuestCart() {
+        const currentItems: CartItem[] = this.cartItems.value;
+        const userItems = this.getAllItems();
+
+        console.log('currentItems: ', currentItems);
+        console.log('userItems: ', userItems);
+
+        for (const item of currentItems) {
+            this.addItemToCart(item);
+        }
+
+        localStorage.removeItem('guest_cart');
+        this.cartItems.next([]);
+    }
+
     // Method used to load cart data from the json file
     private loadCart() {
         if (this.authService.isLoggedIn()) {
