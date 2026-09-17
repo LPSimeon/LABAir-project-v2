@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, forkJoin } from 'rxjs';
 import { ProductData } from '../interfaces/productData';
 import { HttpClient } from '@angular/common/http';
 import { CartItem } from '../interfaces/cartItem';
@@ -70,15 +70,18 @@ export class CartService {
     }
 
     // Add new item rest api
-    addNewItem(item: CartItem): Observable<Object> {
-        return this.httpClient.post(`${this.apiBackendURL}`, item);
+    addNewItem(item: CartItem): Observable<CartItem> {
+        return this.httpClient.post<CartItem>(`${this.apiBackendURL}`, item);
     }
 
     // Update Cart item quantity rest api
-    updateItemQuantity(itemId: string, quantita: number): Observable<Object> {
-        return this.httpClient.patch(`${this.apiBackendURL}/${itemId}`, {
-            quantita,
-        });
+    updateItemQuantity(itemId: string, quantita: number): Observable<CartItem> {
+        return this.httpClient.patch<CartItem>(
+            `${this.apiBackendURL}/${itemId}`,
+            {
+                quantita,
+            },
+        );
     }
 
     // Delete cart item rest api
@@ -213,15 +216,74 @@ export class CartService {
     }
 
     mergeGuestCart() {
-        const currentItems: CartItem[] = this.cartItems.value;
-        const userItems = this.getAllItems();
+        this.getAllItems().subscribe({
+            next: (items) => this.cartItems.next(items),
+        });
 
-        console.log('currentItems: ', currentItems);
+        const userItems = this.cartItems.value;
+        const guestItems: CartItem[] = JSON.parse(
+            localStorage.getItem(this.CART_KEY) ?? '[]',
+        );
+        // const guestItems: CartItem[] =  JSON.parse(guestCart);
+
+        console.log('guestItems: ', guestItems);
         console.log('userItems: ', userItems);
 
-        for (const item of currentItems) {
-            this.addItemToCart(item);
-        }
+        this.getAllItems().subscribe({
+            next: (userItems: CartItem[]) => {
+                const requests: Observable<CartItem>[] = [];
+
+                for (const guestItem of guestItems) {
+                    const existingItem = userItems.find(
+                        (userItem) => userItem.id === guestItem.id,
+                    );
+
+                    if (existingItem) {
+                        const newQuantity =
+                            existingItem.quantita + guestItem.quantita;
+
+                        requests.push(
+                            this.updateItemQuantity(
+                                existingItem.id,
+                                newQuantity,
+                            ),
+                        );
+                    } else {
+                        requests.push(this.addNewItem(guestItem));
+                    }
+                }
+
+                if (requests.length === 0) {
+                    localStorage.removeItem('guest_cart');
+                    this.loadCart();
+                    return;
+                }
+
+                forkJoin(requests).subscribe({
+                    next: () => {
+                        localStorage.removeItem('guest_cart');
+                        this.loadCart();
+                    },
+                    error: (error) => {
+                        console.error(
+                            'Errore durante il merge del carrello:',
+                            error,
+                        );
+                    },
+                });
+            },
+            error: (error) => {
+                console.error(
+                    'Errore nel recupero del carrello utente:',
+                    error,
+                );
+            },
+        });
+
+        // for (let i = 0; i < currentItems.length; i++) {
+        //     if (currentItems[i].id === userItems[i].id)
+        //         userItems[i].quantita += currentItems[i].quantita;
+        // }
 
         localStorage.removeItem('guest_cart');
         this.cartItems.next([]);

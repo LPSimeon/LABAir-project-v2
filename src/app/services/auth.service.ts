@@ -21,10 +21,7 @@ export class AuthService {
 
     loggedIn$ = this.loggedIn.asObservable();
 
-    constructor(
-        private httpClient: HttpClient,
-        private cartService: CartService,
-    ) {}
+    constructor(private httpClient: HttpClient) {}
 
     setToken(token: string) {
         localStorage.setItem(this.TOKEN_KEY, token);
@@ -79,7 +76,11 @@ export class AuthService {
             .pipe(
                 tap((response) => {
                     this.setToken(response.token);
-                    this.cartService.mergeGuestCart();
+                    const guestItems = localStorage.getItem('guest_cart');
+                    // const guestItems: CartItem[] =  JSON.parse(guestCart);
+
+                    console.log('guestItems: ', guestItems);
+                    // // this.cartService.mergeGuestCart();
                 }),
             );
     }

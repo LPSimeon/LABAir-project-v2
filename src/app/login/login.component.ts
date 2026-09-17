@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
+import { CartService } from '../services/cart.service';
 
 @Component({
     selector: 'app-login',
@@ -15,6 +16,7 @@ export class LoginComponent {
     constructor(
         private userService: UserService,
         private authService: AuthService,
+        private cartService: CartService,
         private router: Router,
     ) {}
 
@@ -47,6 +49,8 @@ export class LoginComponent {
 
         this.authService.loginUser(this.userCredentials).subscribe({
             next: (data) => {
+                this.cartService.mergeGuestCart();
+
                 console.log('User token', data);
                 this.router.navigate(['/home']);
             },
