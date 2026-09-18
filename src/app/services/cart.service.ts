@@ -216,77 +216,68 @@ export class CartService {
     }
 
     mergeGuestCart() {
-        this.getAllItems().subscribe({
-            next: (items) => this.cartItems.next(items),
-        });
+        /* STEPS:
+            1. we extract the guest cart and convert it to a CartItem list
+            2. we extract the user's items
+            3. we check for every guest item(with map) to find its corresponding user item. 
+            4. If found we'll sum the quantity of them, if not we'll add it to the db
+            5. we use forkJoin in order to delete the guest cart only when every http call is finished
+        */
+        // 1.
+        const guestCartJson = localStorage.getItem(this.CART_KEY);
 
-        const userItems = this.cartItems.value;
-        const guestItems: CartItem[] = JSON.parse(
-            localStorage.getItem(this.CART_KEY) ?? '[]',
-        );
-        // const guestItems: CartItem[] =  JSON.parse(guestCart);
+        if (!guestCartJson) {
+            return;
+        }
 
-        console.log('guestItems: ', guestItems);
-        console.log('userItems: ', userItems);
+        const guestItems: CartItem[] = JSON.parse(guestCartJson);
 
+        if (guestItems.length === 0) {
+            localStorage.removeItem(this.CART_KEY);
+            return;
+        }
+
+        // 2.
         this.getAllItems().subscribe({
             next: (userItems: CartItem[]) => {
-                const requests: Observable<CartItem>[] = [];
-
-                for (const guestItem of guestItems) {
-                    const existingItem = userItems.find(
-                        (userItem) => userItem.id === guestItem.id,
-                    );
-
-                    if (existingItem) {
-                        const newQuantity =
-                            existingItem.quantita + guestItem.quantita;
-
-                        requests.push(
-                            this.updateItemQuantity(
-                                existingItem.id,
-                                newQuantity,
-                            ),
+                const mergeOperations: Observable<CartItem>[] = guestItems.map(
+                    // 3.
+                    (guestItem) => {
+                        const userItem = userItems.find(
+                            (item) => item.id === guestItem.id,
                         );
-                    } else {
-                        requests.push(this.addNewItem(guestItem));
-                    }
-                }
 
-                if (requests.length === 0) {
-                    localStorage.removeItem('guest_cart');
-                    this.loadCart();
-                    return;
-                }
+                        // 4.
+                        if (userItem) {
+                            const newQuantity =
+                                userItem.quantita + guestItem.quantita;
+                            return this.updateItemQuantity(
+                                userItem.id,
+                                newQuantity,
+                            );
+                        }
 
-                forkJoin(requests).subscribe({
+                        return this.addNewItem(guestItem);
+                    },
+                );
+
+                // 5.
+                forkJoin(mergeOperations).subscribe({
                     next: () => {
-                        localStorage.removeItem('guest_cart');
+                        localStorage.removeItem(this.CART_KEY);
                         this.loadCart();
                     },
-                    error: (error) => {
-                        console.error(
+                    error: (err) => {
+                        console.log(
                             'Errore durante il merge del carrello:',
-                            error,
+                            err,
                         );
                     },
                 });
             },
-            error: (error) => {
-                console.error(
-                    'Errore nel recupero del carrello utente:',
-                    error,
-                );
-            },
+            error: (err) =>
+                console.log('Errore nel recupero del carrello utente:', err),
         });
-
-        // for (let i = 0; i < currentItems.length; i++) {
-        //     if (currentItems[i].id === userItems[i].id)
-        //         userItems[i].quantita += currentItems[i].quantita;
-        // }
-
-        localStorage.removeItem('guest_cart');
-        this.cartItems.next([]);
     }
 
     // Method used to load cart data from the json file
