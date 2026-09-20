@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CartService } from '../services/cart.service';
 import { NgForm } from '@angular/forms';
-import { CheckoutData } from '../interfaces/checkoutData';
+import { ShippingData } from '../interfaces/shippingData';
 import { PaymentData } from '../interfaces/paymentData';
 import { Router } from '@angular/router';
 import { cc_number_format } from '../utils/string-utils';
@@ -9,6 +9,7 @@ import { cc_expires_format } from '../utils/string-utils';
 import { CartItem } from '../interfaces/cartItem';
 import { OrderService } from '../services/order.service';
 import { Order } from '../interfaces/order';
+import { AuthService } from '../services/auth.service';
 
 @Component({
     selector: 'app-checkout',
@@ -18,6 +19,7 @@ import { Order } from '../interfaces/order';
 })
 export class CheckoutComponent {
     constructor(
+        private authService: AuthService,
         private cartService: CartService,
         private orderService: OrderService,
         private router: Router,
@@ -26,15 +28,15 @@ export class CheckoutComponent {
     cartItems: CartItem[] = [];
     cartSubTotal: number = 0;
 
-    shippingData: CheckoutData = {
+    shippingData: ShippingData = {
         email: '',
-        name: '',
-        surname: '',
-        address: '',
+        nome: '',
+        cognome: '',
+        indirizzo: '',
         cap: '',
-        city: '',
-        country: 'Italia',
-        phone: '',
+        citta: '',
+        paese: 'Italia',
+        tel: '',
     };
     paymentData: PaymentData = {
         method: '',
@@ -94,7 +96,7 @@ export class CheckoutComponent {
     placeOrder() {
         const oggettoFinale: Order = {
             id: '',
-            utente: this.shippingData,
+            datiSpedizione: this.shippingData,
             pagamento: this.paymentData,
             prodotti: this.cartItems,
             totale: this.cartSubTotal,

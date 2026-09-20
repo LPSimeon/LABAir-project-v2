@@ -107,7 +107,7 @@
                     <input
                       id="input-name"
                       name="name"
-                      [(ngModel)]="shippingData.name"
+                      [(ngModel)]="shippingData.nome"
                       #name="ngModel"
                       class="input-form"
                       required
@@ -150,7 +150,7 @@
                     <input
                       id="input-surname"
                       name="surname"
-                      [(ngModel)]="shippingData.surname"
+                      [(ngModel)]="shippingData.cognome"
                       #surname="ngModel"
                       class="input-form"
                       required
@@ -195,7 +195,7 @@
                     <input
                       id="input-address"
                       name="address"
-                      [(ngModel)]="shippingData.address"
+                      [(ngModel)]="shippingData.indirizzo"
                       #address="ngModel"
                       class="input-form"
                       required
@@ -279,7 +279,7 @@
                     <input
                       id="input-city"
                       name="city"
-                      [(ngModel)]="shippingData.city"
+                      [(ngModel)]="shippingData.citta"
                       #city="ngModel"
                       class="input-form"
                       required
@@ -341,7 +341,7 @@
                     <input
                       id="input-phone"
                       name="phone"
-                      [(ngModel)]="shippingData.phone"
+                      [(ngModel)]="shippingData.tel"
                       #tel="ngModel"
                       class="input-form"
                       required
@@ -395,13 +395,13 @@
               <div class="sp-text-ctn">
                 <div class="sp-label">Indirizzo di spedizione</div>
                 <div class="sp-text">
-                  {{ shippingData.name }} {{ shippingData.surname }}
+                  {{ shippingData.nome }} {{ shippingData.cognome }}
                 </div>
-                <div class="sp-text">{{ shippingData.address }}</div>
+                <div class="sp-text">{{ shippingData.indirizzo }}</div>
                 <div class="sp-text">
-                  {{ shippingData.cap }} {{ shippingData.city }}
+                  {{ shippingData.cap }} {{ shippingData.citta }}
                 </div>
-                <div class="sp-text">{{ shippingData.phone }}</div>
+                <div class="sp-text">{{ shippingData.tel }}</div>
               </div>
               <div class="sp-text-ctn">
                 <div class="sp-label">Velocità di spedizione</div>
@@ -775,11 +775,11 @@
                   <div class="sp-text-ctn">
                     <div class="sp-label">Dettagli di fatturazione</div>
                     <div class="sp-text">
-                      {{ shippingData.name }} {{ shippingData.surname }}
+                      {{ shippingData.nome }} {{ shippingData.cognome }}
                     </div>
-                    <div class="sp-text">{{ shippingData.address }}</div>
+                    <div class="sp-text">{{ shippingData.indirizzo }}</div>
                     <div class="sp-text">
-                      {{ shippingData.cap }} {{ shippingData.city }}
+                      {{ shippingData.cap }} {{ shippingData.citta }}
                     </div>
                     <div class="sp-text">Italia</div>
                   </div>
