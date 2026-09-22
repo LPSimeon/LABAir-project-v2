@@ -525,7 +525,7 @@
                       class="radio-button"
                       required
                       type="radio"
-                      value="carta"
+                      value="CARTA"
                     />
                     <label for="carta-credito-debito" class="font-1"
                       ><img
@@ -543,7 +543,7 @@
                       class="radio-button"
                       required
                       type="radio"
-                      value="paypal"
+                      value="PAYPAL"
                     />
                     <label for="paypal">
                       <img src="images/Logo/svg/logo-paypal.svg" alt="" />
@@ -558,7 +558,7 @@
                       required
                       class="radio-button"
                       type="radio"
-                      value="gpay"
+                      value="GPAY"
                     />
                     <label for="gpay">
                       <div class="bordo-gpay">
@@ -572,7 +572,7 @@
                 <div
                   id="contenitore-input-carta"
                   class="contenitore-form2 pagamento"
-                  *ngIf="paymentData.method === 'carta'"
+                  *ngIf="paymentData.method === 'CARTA'"
                 >
                   <div class="contenitore-testo-carta">
                     <p>Aggiungi carta</p>
@@ -587,7 +587,7 @@
                           [(ngModel)]="paymentData.cardNumber"
                           #card="ngModel"
                           class="input-form"
-                          [required]="paymentData.method === 'carta'"
+                          [required]="paymentData.method === 'CARTA'"
                           type="text"
                           autocomplete="off"
                           placeholder=" "
@@ -639,7 +639,7 @@
                           [(ngModel)]="paymentData.cardDate"
                           #date="ngModel"
                           class="input-form"
-                          [required]="paymentData.method === 'carta'"
+                          [required]="paymentData.method === 'CARTA'"
                           type="text"
                           autocomplete="off"
                           placeholder=" "
@@ -668,7 +668,7 @@
                           [(ngModel)]="paymentData.cardCVV"
                           #cvv="ngModel"
                           class="input-form"
-                          [required]="paymentData.method === 'carta'"
+                          [required]="paymentData.method === 'CARTA'"
                           type="text"
                           autocomplete="off"
                           placeholder=" "
@@ -738,7 +738,7 @@
               <div class="shipping-preview-ctn">
                 <div class="sp-text-ctn">
                   <div class="sp-label">Metodo di pagamento</div>
-                  @if (paymentData.method == "carta") {
+                  @if (paymentData.method == "CARTA") {
                     <div class="sp-text">
                       <span class="input-icon card summary visible">
                         <img
@@ -754,7 +754,7 @@
                     </div>
                   } @else {
                     <div class="sp-text">
-                      @if (paymentData.method == "paypal") {
+                      @if (paymentData.method == "PAYPAL") {
                         <span class="input-icon card summary visible">
                           <img
                             src="images/Logo/svg/logo-paypal.svg"
@@ -771,7 +771,7 @@
                     </div>
                   }
                 </div>
-                @if (paymentData.method == "carta") {
+                @if (paymentData.method == "CARTA") {
                   <div class="sp-text-ctn">
                     <div class="sp-label">Dettagli di fatturazione</div>
                     <div class="sp-text">

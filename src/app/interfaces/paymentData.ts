@@ -1,5 +1,5 @@
 export interface PaymentData {
-    method: "" | "carta" | "paypal" | "gpay";
+    method: '' | 'CARTA' | 'PAYPAL' | 'GPAY';
     cardNumber?: string;
     cardDate?: string;
     cardCVV?: string;

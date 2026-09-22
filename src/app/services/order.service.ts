@@ -49,6 +49,8 @@ export class OrderService {
     placeNewOrder(finalizedObj: Order) {
         finalizedObj.id = this.generateOrderId(finalizedObj);
 
+        console.log('Vedi qua: ', finalizedObj);
+
         this.createOrder(finalizedObj).subscribe({
             next: () => this.cartService.emptyCart(),
             error: (err) => console.log('Errore:', err),
@@ -63,6 +65,6 @@ export class OrderService {
             numberId += Math.floor(Math.random() * 9);
         }
 
-        return `ordine-${order.datiSpedizione.nome.charAt(0).toLocaleLowerCase()}${order.datiSpedizione.cognome.charAt(0).toLocaleLowerCase()}-${numberId}-${order.dataOrdine}`;
+        return `ordine-${order.dati_spedizione.nome.charAt(0).toLocaleLowerCase()}${order.dati_spedizione.cognome.charAt(0).toLocaleLowerCase()}-${numberId}`; // -${order.data_ordine} rimosso per adesso
     }
 }

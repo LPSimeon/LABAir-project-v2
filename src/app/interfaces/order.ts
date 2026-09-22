@@ -4,9 +4,9 @@ import { PaymentData } from './paymentData';
 
 export interface Order {
     id: string;
-    datiSpedizione: ShippingData;
-    pagamento: PaymentData;
-    prodotti: CartItem[];
-    totale: number;
-    dataOrdine: string;
+    dati_spedizione: ShippingData;
+    pagamento: string; // per far funzionare il enum del backend
+    prodotti?: CartItem[]; // estratti dal backend
+    totale?: number; // estratti dal backend
+    data_ordine: string;
 }

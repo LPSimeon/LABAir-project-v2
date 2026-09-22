@@ -84,23 +84,15 @@ export class CheckoutComponent {
         if (form.valid) {
             this.paymentData = { ...this.paymentData, ...form.value };
             this.verifyFlag = true;
-
-            // console.log("Ordine pronto per verifica:", {
-            //     utente: this.shippingData,
-            //     pagamento: this.paymentData,
-            //     prodotti: this.cartItems
-            // });
         }
     }
 
     placeOrder() {
         const oggettoFinale: Order = {
             id: '',
-            datiSpedizione: this.shippingData,
-            pagamento: this.paymentData,
-            prodotti: this.cartItems,
-            totale: this.cartSubTotal,
-            dataOrdine: new Date().toLocaleDateString(),
+            dati_spedizione: this.shippingData,
+            pagamento: this.paymentData.method,
+            data_ordine: new Date().toLocaleDateString(),
         };
 
         this.orderService.placeNewOrder(oggettoFinale);
