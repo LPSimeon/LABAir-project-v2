@@ -3,7 +3,6 @@ import { CartService } from '../services/cart.service';
 import { NgForm } from '@angular/forms';
 import { ShippingData } from '../interfaces/shippingData';
 import { PaymentData } from '../interfaces/paymentData';
-import { Router } from '@angular/router';
 import { cc_number_format } from '../utils/string-utils';
 import { cc_expires_format } from '../utils/string-utils';
 import { CartItem } from '../interfaces/cartItem';
@@ -18,11 +17,11 @@ import { AuthService } from '../services/auth.service';
     styleUrl: './checkout.component.scss',
 })
 export class CheckoutComponent {
+    // far funzionare il checkout anche se sei ospite, se loggato i valori di email, nome e cognome devono essere riempiti in automatico (forse da estrarre nel token)
     constructor(
         private authService: AuthService,
         private cartService: CartService,
         private orderService: OrderService,
-        private router: Router,
     ) {}
 
     cartItems: CartItem[] = [];
@@ -88,16 +87,13 @@ export class CheckoutComponent {
     }
 
     placeOrder() {
+        // removed id and data_ordine
         const oggettoFinale: Order = {
-            id: '',
             dati_spedizione: this.shippingData,
             pagamento: this.paymentData.method,
-            data_ordine: new Date().toLocaleDateString(),
         };
 
         this.orderService.placeNewOrder(oggettoFinale);
-
-        this.router.navigate(['/checkout/order-confirmed']);
     }
 
     // Method used to open the popups with the '?'

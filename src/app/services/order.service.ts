@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Order } from '../interfaces/order';
 import { CartService } from './cart.service';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root',
@@ -14,6 +15,7 @@ export class OrderService {
     constructor(
         private httpClient: HttpClient,
         private cartService: CartService,
+        private router: Router,
     ) {}
 
     // REST API methods
@@ -39,24 +41,28 @@ export class OrderService {
 
     // Method to place the order
     placeNewOrder(finalizedObj: Order) {
-        finalizedObj.id = this.generateOrderId(finalizedObj);
+        // finalizedObj.id = this.generateOrderId(finalizedObj);
 
         console.log('Vedi qua: ', finalizedObj);
 
         this.createOrder(finalizedObj).subscribe({
-            next: () => this.cartService.emptyCart(),
+            next: () => {
+                this.cartService.emptyCart();
+                this.router.navigate(['/checkout/order-confirmed']);
+            },
             error: (err) => console.log('Errore:', err),
         });
     }
 
+    // Moved 'generateOrderId' to the backend
     // Method used to generate the order id
-    generateOrderId(order: Order): string {
-        let numberId = '';
+    // generateOrderId(order: Order): string {
+    //     let numberId = '';
 
-        for (let i = 0; i < 4; i++) {
-            numberId += Math.floor(Math.random() * 9);
-        }
+    //     for (let i = 0; i < 4; i++) {
+    //         numberId += Math.floor(Math.random() * 9);
+    //     }
 
-        return `ordine-${order.dati_spedizione.nome.charAt(0).toLocaleLowerCase()}${order.dati_spedizione.cognome.charAt(0).toLocaleLowerCase()}-${numberId}`; // -${order.data_ordine} rimosso per adesso
-    }
+    //     return `ordine-${order.dati_spedizione.nome.charAt(0).toLocaleLowerCase()}${order.dati_spedizione.cognome.charAt(0).toLocaleLowerCase()}-${numberId}`; // -${convertSlashToDash(order.data_ordine)} rimosso per adesso
+    // }
 }
