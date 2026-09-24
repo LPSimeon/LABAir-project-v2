@@ -32,14 +32,6 @@ export class OrderService {
         return this.httpClient.post(`${this.apiBackendURL}/create`, order);
     }
 
-    // Modify order rest api
-    updateOrder(orderId: string, modifiedOrder: Order): Observable<Object> {
-        return this.httpClient.patch(
-            `${this.apiBackendURL}/${orderId}`,
-            modifiedOrder,
-        );
-    }
-
     // Delete order rest api
     deleteOrder(orderId: string): Observable<Object> {
         return this.httpClient.delete(`${this.apiBackendURL}/${orderId}`);
