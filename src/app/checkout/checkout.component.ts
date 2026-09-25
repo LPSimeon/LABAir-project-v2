@@ -9,6 +9,8 @@ import { CartItem } from '../interfaces/cartItem';
 import { OrderService } from '../services/order.service';
 import { Order } from '../interfaces/order';
 import { AuthService } from '../services/auth.service';
+import { JwtPayload } from '../interfaces/userData';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
     selector: 'app-checkout',
@@ -42,6 +44,12 @@ export class CheckoutComponent {
         cardNumber: '',
         cardDate: '',
     };
+    // loggedUserData: loggedUserData = {
+    //     email: '',
+    //     nome: '',
+    //     cognome: '',
+    // };
+    // payload: JwtPayload = {};
 
     popupFlag1: boolean = false;
     popupFlag2: boolean = false;
@@ -56,6 +64,13 @@ export class CheckoutComponent {
     cardImgType: string = '';
 
     ngOnInit() {
+        const payload = this.authService.extractPayload();
+        if (payload) {
+            this.shippingData.email = payload.sub;
+            this.shippingData.nome = payload.nome;
+            this.shippingData.cognome = payload.cognome;
+        }
+
         this.cartService.cart$.subscribe((items) => {
             this.cartItems = items;
         });

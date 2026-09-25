@@ -44,9 +44,9 @@ export class HeaderComponent {
         this.authService.loggedIn$.subscribe((state) => {
             this.isUserLoggedIn = state;
             // console.log(this.isUserLoggedIn);
-
-            if (state) {
-                this.username = this.authService.getUsername();
+            const payload = this.authService.extractPayload();
+            if (state && payload) {
+                this.username = payload.nome;
             }
         });
     }

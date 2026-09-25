@@ -89,14 +89,22 @@ export class AuthService {
         this.removeToken();
     }
 
-    getUsername(): string {
+    extractPayload(): JwtPayload | null {
         const token = this.getToken();
 
         if (!token) {
-            return '';
+            return null;
         }
 
-        const payload = jwtDecode<JwtPayload>(token);
+        return jwtDecode<JwtPayload>(token);
+    }
+
+    getUserNome(): string {
+        const payload = this.extractPayload();
+
+        if (!payload) {
+            return '';
+        }
 
         return payload.nome;
     }
