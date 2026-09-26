@@ -26,7 +26,13 @@ export class CartService {
         private httpClient: HttpClient,
         private authService: AuthService,
     ) {
-        this.loadCart();
+        this.authService.loggedIn$.subscribe((isLoggedIn) => {
+            if (isLoggedIn) {
+                this.mergeGuestCart();
+            } else {
+                this.loadCart();
+            }
+        });
     }
 
     private cartItems = new BehaviorSubject<CartItem[]>([]);
@@ -227,6 +233,7 @@ export class CartService {
         const guestCartJson = localStorage.getItem(this.CART_KEY);
 
         if (!guestCartJson) {
+            this.loadCart();
             return;
         }
 
@@ -234,12 +241,13 @@ export class CartService {
 
         if (guestItems.length === 0) {
             localStorage.removeItem(this.CART_KEY);
+            this.loadCart();
             return;
         }
 
         // 2.
         this.getAllItems().subscribe({
-            next: (userItems: CartItem[]) => {
+            next: (userItems) => {
                 const mergeOperations: Observable<CartItem>[] = guestItems.map(
                     // 3.
                     (guestItem) => {
@@ -249,11 +257,9 @@ export class CartService {
 
                         // 4.
                         if (userItem) {
-                            const newQuantity =
-                                userItem.quantita + guestItem.quantita;
                             return this.updateItemQuantity(
                                 userItem.id,
-                                newQuantity,
+                                userItem.quantita + guestItem.quantita,
                             );
                         }
 

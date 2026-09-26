@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
+import { CartService } from '../services/cart.service';
 
 @Component({
     selector: 'app-signup',
@@ -15,6 +16,7 @@ export class SignupComponent {
     constructor(
         private userService: UserService,
         private authService: AuthService,
+        private cartService: CartService,
         private router: Router,
     ) {}
 
@@ -140,8 +142,7 @@ export class SignupComponent {
             next: (data) => {
                 console.log('Ok', data);
                 this.authService.setToken(data.token);
-                // console.log(this.authService.getToken());
-                // console.log(this.authService.isLoggedIn());
+
                 this.router.navigate(['/home']);
             },
             error: (error) => console.log(error),

@@ -53,16 +53,4 @@ export class OrderService {
             error: (err) => console.log('Errore:', err),
         });
     }
-
-    // Moved 'generateOrderId' to the backend
-    // Method used to generate the order id
-    // generateOrderId(order: Order): string {
-    //     let numberId = '';
-
-    //     for (let i = 0; i < 4; i++) {
-    //         numberId += Math.floor(Math.random() * 9);
-    //     }
-
-    //     return `ordine-${order.dati_spedizione.nome.charAt(0).toLocaleLowerCase()}${order.dati_spedizione.cognome.charAt(0).toLocaleLowerCase()}-${numberId}`; // -${convertSlashToDash(order.data_ordine)} rimosso per adesso
-    // }
 }

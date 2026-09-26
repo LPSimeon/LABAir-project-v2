@@ -2,15 +2,19 @@ import { Component } from '@angular/core';
 import { CartService } from '../services/cart.service';
 import { ProductData } from '../interfaces/productData';
 import { CartItem } from '../interfaces/cartItem';
+import { AuthService } from '../services/auth.service';
 
 @Component({
     selector: 'app-cart',
     standalone: false,
     templateUrl: './cart.component.html',
-    styleUrl: './cart.component.scss'
+    styleUrl: './cart.component.scss',
 })
 export class CartComponent {
-    constructor(private cartService: CartService) { }
+    constructor(
+        private authService: AuthService,
+        private cartService: CartService,
+    ) {}
 
     cartItems: CartItem[] = [];
 
@@ -20,8 +24,13 @@ export class CartComponent {
     isPopupOpen: boolean = false;
 
     ngOnInit() {
+        if (this.authService.isLoggedIn()) {
+            this.cartService.getAllItems().subscribe((data) => {
+                console.log('Carrello utente', data);
+            });
+        }
         // In order to change the number of items and the price in the html we're going to calculate these values in the subscription
-        this.cartService.cart$.subscribe(data => {
+        this.cartService.cart$.subscribe((data) => {
             if (data === null) return;
 
             this.cartItems = data;
@@ -29,12 +38,12 @@ export class CartComponent {
             // To show the message alert
             if (this.cartItems.length === 0) {
                 this.noItemsFlag = true;
-                console.log("Carrello vuoto");
+                console.log('Carrello vuoto');
             } else this.noItemsFlag = false;
             // In order to calculate the total price
         });
 
-        this.cartService.subtotal$.subscribe(subtotal => {
+        this.cartService.subtotal$.subscribe((subtotal) => {
             this.totalPrice = subtotal;
         });
     }

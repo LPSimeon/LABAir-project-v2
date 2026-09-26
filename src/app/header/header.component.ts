@@ -33,7 +33,7 @@ export class HeaderComponent {
             this.nProductCart = items.reduce(
                 (acc, item) => acc + item.quantita,
                 0,
-            ); // method reduce in order to get a single value from the array by doing the sum of the quantities
+            );
         });
 
         this.cartService.checkoutState$.subscribe((state) => {

@@ -8,7 +8,6 @@ import {
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
-import { CartService } from './cart.service';
 
 @Injectable({
     providedIn: 'root',
@@ -76,11 +75,6 @@ export class AuthService {
             .pipe(
                 tap((response) => {
                     this.setToken(response.token);
-                    const guestItems = localStorage.getItem('guest_cart');
-                    // const guestItems: CartItem[] =  JSON.parse(guestCart);
-
-                    console.log('guestItems: ', guestItems);
-                    // // this.cartService.mergeGuestCart();
                 }),
             );
     }
