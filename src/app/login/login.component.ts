@@ -49,7 +49,7 @@ export class LoginComponent {
 
         this.authService.loginUser(this.userCredentials).subscribe({
             next: (data) => {
-                this.cartService.mergeGuestCart();
+                // this.cartService.mergeGuestCart();
 
                 console.log('User token', data);
                 this.router.navigate(['/home']);

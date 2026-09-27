@@ -141,7 +141,7 @@ export class SignupComponent {
         this.authService.registerUser(this.user).subscribe({
             next: (data) => {
                 console.log('Ok', data);
-                this.authService.setToken(data.token);
+                // removed setToken instruction in order to not call a 2nd mergeGuestCart() method
 
                 this.router.navigate(['/home']);
             },
@@ -151,6 +151,5 @@ export class SignupComponent {
 
     ngOnDestroy() {
         this.userService.setHeaderFooterState(false);
-        // this.userService
     }
 }
