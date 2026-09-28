@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
+import { afterNextRender, Component } from '@angular/core';
 import { UserData } from '../interfaces/userData';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
-import { CartService } from '../services/cart.service';
 
 @Component({
     selector: 'app-signup',
@@ -16,12 +15,13 @@ export class SignupComponent {
     constructor(
         private userService: UserService,
         private authService: AuthService,
-        private cartService: CartService,
         private router: Router,
     ) {}
 
     ngOnInit() {
-        this.userService.setHeaderFooterState(true);
+        afterNextRender(() => {
+            this.userService.setHeaderFooterState(true);
+        });
     }
 
     user: UserData = {

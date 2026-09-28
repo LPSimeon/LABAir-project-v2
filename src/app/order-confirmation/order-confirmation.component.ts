@@ -1,17 +1,18 @@
-import { Component } from '@angular/core';
+import { afterNextRender, Component } from '@angular/core';
 import { CartService } from '../services/cart.service';
-import { OrderService } from '../services/order.service';
 
 @Component({
     selector: 'app-order-confirmation',
     standalone: false,
     templateUrl: './order-confirmation.component.html',
-    styleUrl: './order-confirmation.component.scss'
+    styleUrl: './order-confirmation.component.scss',
 })
 export class OrderConfirmationComponent {
-    constructor(private cartService: CartService, private orderService: OrderService) { }
+    constructor(private cartService: CartService) {}
 
     ngOnInit() {
-        this.cartService.setCheckoutState(true);
+        afterNextRender(() => {
+            this.cartService.setCheckoutState(true);
+        });
     }
 }

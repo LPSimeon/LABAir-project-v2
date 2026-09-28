@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { afterNextRender, Component } from '@angular/core';
 import { LoginData } from '../interfaces/userData';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -21,7 +21,9 @@ export class LoginComponent {
     ) {}
 
     ngOnInit() {
-        this.userService.setHeaderFooterState(true);
+        afterNextRender(() => {
+            this.userService.setHeaderFooterState(true);
+        });
     }
 
     userCredentials: LoginData = {

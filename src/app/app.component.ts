@@ -1,4 +1,4 @@
-import { Component, HostListener, Renderer2 } from '@angular/core';
+import { Component, DestroyRef, HostListener, Renderer2 } from '@angular/core';
 import { CartService } from './services/cart.service';
 import { UserService } from './services/user.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -7,22 +7,15 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     selector: 'app-root',
     templateUrl: './app.component.html',
     standalone: false,
-    styleUrl: './app.component.scss'
+    styleUrl: './app.component.scss',
 })
 export class AppComponent {
-    constructor(private userService: UserService, private cartService: CartService, private renderer: Renderer2) {
-        this.cartService.checkoutState$
-            .pipe(takeUntilDestroyed())
-            .subscribe(state => {
-                this.checkoutFlag = state;
-            });
-
-        this.userService.hfState$
-            .pipe(takeUntilDestroyed())
-            .subscribe(state => {
-                this.authFlag = state;
-            });
-    }
+    constructor(
+        private userService: UserService,
+        private cartService: CartService,
+        private renderer: Renderer2,
+        private destroyRef: DestroyRef,
+    ) {}
 
     title = 'lab-air-prova-2';
 
@@ -44,7 +37,6 @@ export class AppComponent {
 
         // Check if we're at the top of the page
         if (currentScrollPos <= 5) {
-
             // console.log(currentScrollPos);
             this.isHeaderVisible = true;
             this.isAtTop = true;
@@ -62,25 +54,38 @@ export class AppComponent {
     }
 
     ngOnInit() {
-        // In order to activate the blur 
-        this.cartService.popupState$.subscribe(state => {
-            this.blurFlag2 = state.isOpen;
+        this.cartService.checkoutState$
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((state) => {
+                this.checkoutFlag = state;
+            });
 
-            if (this.blurFlag2) {
+        this.userService.hfState$
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((state) => {
+                this.authFlag = state;
+            });
 
-                // window.scrollTo(0, 0);
-                window.scrollTo({
-                    top: 0,
-                    left: 0,
-                    behavior: 'auto'
-                });
-                // In order to stop the scroll 
-                this.renderer.addClass(document.body, 'no-scroll');
-            } else {
-                // to remove the class of the body
-                this.renderer.removeClass(document.body, 'no-scroll');
-            }
-        });
+        // In order to activate the blur
+        this.cartService.popupState$
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((state) => {
+                this.blurFlag2 = state.isOpen;
+
+                if (this.blurFlag2) {
+                    // window.scrollTo(0, 0);
+                    window.scrollTo({
+                        top: 0,
+                        left: 0,
+                        behavior: 'auto',
+                    });
+                    // In order to stop the scroll
+                    this.renderer.addClass(document.body, 'no-scroll');
+                } else {
+                    // to remove the class of the body
+                    this.renderer.removeClass(document.body, 'no-scroll');
+                }
+            });
     }
 
     // Method to receive the response of the header (hover)

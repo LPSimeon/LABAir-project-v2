@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { afterNextRender, Component } from '@angular/core';
 import { CartService } from '../services/cart.service';
 import { NgForm } from '@angular/forms';
 import { ShippingData } from '../interfaces/shippingData';
@@ -9,8 +9,6 @@ import { CartItem } from '../interfaces/cartItem';
 import { OrderService } from '../services/order.service';
 import { Order } from '../interfaces/order';
 import { AuthService } from '../services/auth.service';
-import { JwtPayload } from '../interfaces/userData';
-import { jwtDecode } from 'jwt-decode';
 
 @Component({
     selector: 'app-checkout',
@@ -81,7 +79,9 @@ export class CheckoutComponent {
             this.cartSubTotal = subtotal;
         });
 
-        this.cartService.setCheckoutState(true);
+        afterNextRender(() => {
+            this.cartService.setCheckoutState(true);
+        });
 
         this.cardImgFlag = false;
         this.cardImgType = '';
