@@ -106,6 +106,9 @@ export class CheckoutComponent {
         const oggettoFinale: Order = {
             dati_spedizione: this.shippingData,
             pagamento: this.paymentData.method,
+            cart_items: this.authService.isLoggedIn()
+                ? undefined
+                : this.cartItems,
         };
 
         this.orderService.placeNewOrder(oggettoFinale);
