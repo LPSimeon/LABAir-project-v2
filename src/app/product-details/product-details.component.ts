@@ -11,40 +11,49 @@ import { convertSpaceToDash } from '../utils/string-utils';
     selector: 'app-product-details',
     standalone: false,
     templateUrl: './product-details.component.html',
-    styleUrl: './product-details.component.scss'
+    styleUrl: './product-details.component.scss',
 })
-
 export class ProductDetailsComponent {
-    constructor(private route: ActivatedRoute, private productService: ProductService, private cartService: CartService) { }
+    constructor(
+        private route: ActivatedRoute,
+        private productService: ProductService,
+        private cartService: CartService,
+    ) {}
 
     selectedProduct?: Product;
-    selectedColorway: string = ""; // From the colorParam in the Url
+    selectedColorway: string = ''; // From the colorParam in the Url
     selectedCwImgs: string[] = [];
     selectedIndex: number = 0;
     selectedShoeSize: string | null = null;
-    defaultColorway: string = "nero";
+    defaultColorway: string = 'nero';
 
-    currentDisplayImage: string = "";
+    currentDisplayImage: string = '';
 
     isAlertVisible: boolean = false;
 
     ngOnInit() {
-        this.route.paramMap.subscribe(params => {
+        this.route.paramMap.subscribe((params) => {
             const nameParam = params.get('slug');
             const colorParam = params.get('color');
 
-            console.log("slug: " + nameParam + " color: " + colorParam)
+            console.log('slug: ' + nameParam + ' color: ' + colorParam);
 
             if (nameParam) {
                 this.productService.getProductBySlug(nameParam).subscribe({
                     next: (product) => {
                         this.selectedProduct = product;
-                        this.selectedColorway = colorParam || this.defaultColorway;
+                        this.selectedColorway =
+                            colorParam || this.defaultColorway;
 
-                        this.selectedCwImgs = this.selectedProduct?.immagini_scarpa[this.selectedProduct.colori_disponibili.indexOf(this.selectedColorway)].urls as string[]; // We use indexOf of colori_disponibili to assign the images of the selected colorway
+                        this.selectedCwImgs = this.selectedProduct
+                            ?.immagini_scarpa[
+                            this.selectedProduct.colori_disponibili.indexOf(
+                                this.selectedColorway,
+                            )
+                        ].urls as string[]; // We use indexOf of colori_disponibili to assign the images of the selected colorway
 
                         this.currentDisplayImage = this.selectedCwImgs[0];
-                    }
+                    },
                 });
             }
         });
@@ -85,17 +94,21 @@ export class ProductDetailsComponent {
     }
 
     addProductToCart() {
-        console.log("Colore selezionato: " + capitalizeFirstLetter(this.selectedColorway))
+        console.log(
+            'Colore selezionato: ' +
+                capitalizeFirstLetter(this.selectedColorway),
+        );
 
         if (!this.selectedProduct || !this.selectedShoeSize) {
             this.isAlertVisible = true;
-            console.log("Errore: Nessuna taglia selezionata");
+            console.log('Errore: Nessuna taglia selezionata');
             return;
         }
 
         this.isAlertVisible = false;
         // console.log("Prodotto aggiunto! Taglia:", this.selectedShoeSize);
 
+        // Mettere sistema che mette le immagini della scarpa in base al colore per bene
         // It goes to popup-cart component
         const infoProdotto: ProductData = {
             scarpa_id: this.selectedProduct.id,
@@ -106,7 +119,7 @@ export class ProductDetailsComponent {
             img_scarpa_cover: this.selectedCwImgs[0],
         };
 
-        console.log("infoProdotto: ", infoProdotto)
+        console.log('infoProdotto: ', infoProdotto);
 
         this.cartService.openPopup(infoProdotto);
     }
@@ -115,5 +128,7 @@ export class ProductDetailsComponent {
         return convertSpaceToDash(name).toLowerCase();
     }
 
-    ngOnDestroy() { this.isAlertVisible = false; }
+    ngOnDestroy() {
+        this.isAlertVisible = false;
+    }
 }

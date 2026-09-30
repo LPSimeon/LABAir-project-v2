@@ -1,8 +1,7 @@
-import { afterNextRender, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { UserData } from '../interfaces/userData';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -13,16 +12,9 @@ import { AuthService } from '../services/auth.service';
 })
 export class SignupComponent {
     constructor(
-        private userService: UserService,
         private authService: AuthService,
         private router: Router,
     ) {}
-
-    ngOnInit() {
-        afterNextRender(() => {
-            this.userService.setHeaderFooterState(true);
-        });
-    }
 
     user: UserData = {
         nome: '',
@@ -147,9 +139,5 @@ export class SignupComponent {
             },
             error: (error) => console.log(error),
         });
-    }
-
-    ngOnDestroy() {
-        this.userService.setHeaderFooterState(false);
     }
 }

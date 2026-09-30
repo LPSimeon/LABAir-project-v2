@@ -1,7 +1,8 @@
 import { Component, DestroyRef, HostListener, Renderer2 } from '@angular/core';
 import { CartService } from './services/cart.service';
-import { UserService } from './services/user.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter, map } from 'rxjs';
 
 @Component({
     selector: 'app-root',
@@ -11,10 +12,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class AppComponent {
     constructor(
-        private userService: UserService,
         private cartService: CartService,
         private renderer: Renderer2,
         private destroyRef: DestroyRef,
+        private router: Router,
+        private activatedRoute: ActivatedRoute,
     ) {}
 
     title = 'lab-air-prova-2';
@@ -54,16 +56,25 @@ export class AppComponent {
     }
 
     ngOnInit() {
+        // In order to change the header when we are in the Chekout
         this.cartService.checkoutState$
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((state) => {
                 this.checkoutFlag = state;
             });
 
-        this.userService.hfState$
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe((state) => {
-                this.authFlag = state;
+        this.router.events
+            .pipe(
+                filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+                map(() => {
+                    let route = this.activatedRoute;
+                    while (route.firstChild) route = route.firstChild;
+                    return !!route.snapshot.data['hideHeaderFooter'];
+                }),
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe((hide) => {
+                this.authFlag = hide;
             });
 
         // In order to activate the blur

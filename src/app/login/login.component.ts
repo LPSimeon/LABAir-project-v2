@@ -1,10 +1,8 @@
-import { afterNextRender, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { LoginData } from '../interfaces/userData';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
-import { CartService } from '../services/cart.service';
 
 @Component({
     selector: 'app-login',
@@ -14,17 +12,9 @@ import { CartService } from '../services/cart.service';
 })
 export class LoginComponent {
     constructor(
-        private userService: UserService,
         private authService: AuthService,
-        private cartService: CartService,
         private router: Router,
     ) {}
-
-    ngOnInit() {
-        afterNextRender(() => {
-            this.userService.setHeaderFooterState(true);
-        });
-    }
 
     userCredentials: LoginData = {
         email: '',
@@ -61,9 +51,5 @@ export class LoginComponent {
                 this.errCredentialsFlag = true;
             },
         });
-    }
-
-    ngOnDestroy() {
-        this.userService.setHeaderFooterState(false);
     }
 }

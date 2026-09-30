@@ -1,4 +1,4 @@
-import { afterNextRender, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { CartService } from '../services/cart.service';
 import { NgForm } from '@angular/forms';
 import { ShippingData } from '../interfaces/shippingData';
@@ -24,6 +24,8 @@ export class CheckoutComponent {
         private orderService: OrderService,
     ) {}
 
+    // private injector = inject(Injector);
+
     cartItems: CartItem[] = [];
     cartSubTotal: number = 0;
 
@@ -42,12 +44,6 @@ export class CheckoutComponent {
         cardNumber: '',
         cardDate: '',
     };
-    // loggedUserData: loggedUserData = {
-    //     email: '',
-    //     nome: '',
-    //     cognome: '',
-    // };
-    // payload: JwtPayload = {};
 
     popupFlag1: boolean = false;
     popupFlag2: boolean = false;
@@ -79,9 +75,13 @@ export class CheckoutComponent {
             this.cartSubTotal = subtotal;
         });
 
-        afterNextRender(() => {
-            this.cartService.setCheckoutState(true);
-        });
+        // afterNextRender(
+        //     () => {
+        this.cartService.setCheckoutState(true);
+        //     },
+
+        //     { injector: this.injector },
+        // );
 
         this.cardImgFlag = false;
         this.cardImgType = '';
