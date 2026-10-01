@@ -46,27 +46,27 @@
       </div>
     </div>
 
-    <ul #scrollContainer (scroll)="checkScrollPosition(0, $event.target)">
+    <ul #scrollContainer (scroll)="checkScrollPosition(0, $any($event.target))">
       <ng-container *ngFor="let shoe of shoeList">
         <ng-container *ngIf="shoe.best_seller >= 3">
           <li>
             <div class="contenitore-prodotto-li">
-              <a routerLink="/shoes" (shoeClick)="onShoeClick($event)"
+              <a routerLink="/shoes" (shoeClick)="($event)"
                 ><div class="contenitore-scarpa">
                   <div class="contenitore-img-scarpa">
-                    <img src="{{ shoe.immagine }}" alt="Image of the shoe" />
-                    <!-- images/Home-page/scarpa_1.jpg -->
+                    <img
+                      src="{{ shoe.immagine_cover }}"
+                      alt="Image of the shoe"
+                    />
                   </div>
                   <div class="testo-scarpa">
                     <div class="nome-tipo-scarpa">
                       <h4>{{ shoe.nome }}</h4>
-                      <!-- <h4> Nike Dunk Low Retro </h4> -->
                       <h5>Scarpa - Uomo</h5>
                     </div>
                     <div class="prezzo-scarpa">
                       <h3>{{ shoe.prezzo | number: "1.2-2" }} €</h3>
                     </div>
-                    <!-- <h3>119,99 €</h3> -->
                   </div>
                 </div></a
               >
@@ -105,7 +105,7 @@
         </button>
       </div>
     </div>
-    <ul #scrollContainer (scroll)="checkScrollPosition(1, $event.target)">
+    <ul #scrollContainer (scroll)="checkScrollPosition(1, $any($event.target))">
       <!-- Inserire ngFor -->
       <li>
         <div class="contenitore-prodotto-li">
@@ -210,7 +210,7 @@
         </button>
       </div>
     </div>
-    <ul #scrollContainer (scroll)="checkScrollPosition(2, $event.target)">
+    <ul #scrollContainer (scroll)="checkScrollPosition(2, $any($event.target))">
       <li>
         <div class="contenitore-prodotto-li">
           <div class="contenitore-membership">

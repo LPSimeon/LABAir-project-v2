@@ -50,6 +50,13 @@ app-header {
   }
 }
 
+app-signup,
+app-login {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .font-1 {
   font-family: Helvetica, Arial, sans-serif;
   font-weight: 500;
@@ -231,7 +238,7 @@ button.icon-button.cart:not(:disabled):hover {
 .bottone-grande {
   /* width: 100%; */
   padding: 20px 24px;
-  height: 60px;
+  max-height: 60px;
   border-radius: 30px;
   border: 1px solid colore.$grigio-chiaro1;
   background-color: colore.$bianco;
@@ -282,7 +289,6 @@ button.icon-button.cart:not(:disabled):hover {
 }
 
 .bottone-grande.popup {
-  padding: 15px 10px;
   margin-bottom: 0;
 }
 
@@ -328,6 +334,14 @@ button.icon-button.cart:not(:disabled):hover {
   &:hover {
     background-color: colore.$arancione-hover;
   }
+}
+
+.bottone-grande.auth {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  margin: 0;
+  line-height: 16px;
+  min-height: 46px;
 }
 
 /* Parte carrelo.html */
@@ -422,6 +436,9 @@ button.icon-button.cart:not(:disabled):hover {
   }
   &.gray {
     color: colore.$grigio;
+  }
+  &.red {
+    color: colore.$rosso;
   }
 }
 
@@ -607,7 +624,419 @@ a.underlined-link:hover {
   }
 } // End of classes used in cart and checkout components
 
-/* Parte checkBox pagamento*/
+.contenitore-form2 {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  //   padding-bottom: 10px;
+  //   margin-bottom: 5px;
+  position: relative;
+
+  &.auth {
+    gap: 8px;
+  }
+}
+
+// Input form
+// Container for the input, input icon and the error message(birth date inputs error message excluded)
+.voce-form {
+  border-radius: 8px;
+
+  input[type="radio"] {
+    width: 0;
+    height: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    margin: 0;
+    z-index: -1;
+
+    ~ label {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      padding: 14px 10px;
+      gap: 5px;
+      border: 1px solid colore.$grigio-chiaro2;
+      cursor: pointer;
+    }
+
+    &:disabled ~ label {
+      cursor: default;
+      color: colore.$grigio-chiaro2;
+
+      img {
+        filter: invert(50%) grayscale(100%);
+      }
+    }
+  }
+
+  // voce-form input container
+  .vf-input-ctn {
+    display: flex;
+    justify-content: flex-start;
+    background-color: transparent;
+    align-items: center;
+    position: relative;
+    height: 3.5rem;
+    border: 1px solid colore.$grigio;
+    border-radius: 8px;
+
+    &:hover:not(:has(input:disabled)) {
+      border-color: colore.$nero;
+    }
+
+    // Removed repetitive styles
+    &:has(
+      input[type="text"]:focus,
+      input[type="email"]:focus,
+      input[type="password"]:focus
+    ) {
+      border-color: colore.$nero;
+      outline: none;
+
+      input[type="text"]:focus ~ label,
+      input[type="email"]:focus ~ label,
+      input[type="password"]:focus ~ label {
+        color: colore.$nero;
+      }
+    }
+
+    // Disabled inputs
+    // Removed repetitive styles
+    &:has(
+      input[type="text"]:disabled,
+      input[type="email"]:disabled,
+      input[type="password"]:disabled
+    ) {
+      border-color: colore.$grigio-chiaro2;
+
+      &:hover {
+        border-color: colore.$grigio-chiaro2;
+      }
+    }
+
+    .input-form {
+      width: 100%;
+      flex-grow: 1;
+      height: 100%;
+      background-color: colore.$bianco;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 16px 12px;
+      font-size: 1em;
+      font-family: Helvetica;
+
+      &:focus {
+        outline: none;
+      }
+
+      &.date {
+        text-align: center;
+      }
+    }
+
+    label {
+      position: absolute;
+      background: colore.$bianco;
+      color: colore.$grigio;
+      font-family: sans-serif;
+      left: 1em;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: text;
+      transition:
+        top 250ms ease,
+        font-size 250ms ease;
+    }
+
+    // Removed unnecessary styles with better ones
+    input[type="text"] ~ label,
+    input[type="email"] ~ label,
+    input[type="password"] ~ label,
+    .input-form:not(:placeholder-shown).input-form:not(:focus) ~ label {
+      top: 0;
+      transform: translateY(-50%);
+      font-size: 0.8rem;
+      padding: 0 0.125em;
+    }
+
+    // Removed repetitive styles
+    &:has(
+        input[type="text"]:disabled,
+        input[type="email"]:disabled,
+        input[type="password"]:disabled
+      )
+      input[type="text"]
+      ~ label,
+    &:has(input[type="email"]:disabled) input[type="email"] ~ label,
+    &:has(input[type="password"]:disabled) input[type="password"] ~ label {
+      color: colore.$grigio-chiaro2;
+    }
+  }
+
+  // For inputs with the error message next to them
+  &:has(.messaggio-errore.active) {
+    .vf-input-ctn {
+      border-color: colore.$rosso;
+
+      label {
+        color: colore.$rosso;
+      }
+
+      &:hover {
+        border-color: colore.$rosso;
+      }
+
+      &:has(
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus
+      ) {
+        border: 1px solid colore.$rosso;
+        outline: none;
+
+        input[type="text"]:focus ~ label,
+        input[type="email"]:focus ~ label,
+        input[type="password"]:focus ~ label {
+          color: colore.$rosso;
+        }
+      }
+    }
+  }
+}
+
+.error-message-ctn {
+  min-height: 1.25em;
+
+  .messaggio-errore {
+    //   position: absolute;
+    display: block;
+    margin-top: 4px;
+    margin-bottom: 10px;
+    padding: 0 12px;
+    font-size: 0.75em;
+    opacity: 0;
+    visibility: hidden;
+    color: colore.$rosso;
+    word-wrap: break-word;
+    min-height: 0.85em;
+
+    &.active {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}
+
+.input-icon {
+  display: flex;
+  width: 24px;
+  height: 24px;
+
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  pointer-events: none;
+
+  &.visible {
+    opacity: 1;
+  }
+
+  &.right {
+    margin-right: 12px;
+  }
+
+  &.left {
+    margin-left: 12px;
+  }
+
+  &.clickable {
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  &.card {
+    width: 50px;
+    border: 1px solid colore.$grigio-chiaro1;
+    border-radius: 2px;
+    padding: 0 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.summary {
+      width: 40px;
+      border-radius: 4px;
+    }
+  }
+}
+
+.voce-form.tipo-1 {
+  width: 100%;
+}
+
+.voce-form.tipo-2 {
+  width: 50%;
+  /* gap: 5px; */
+}
+
+.voce-form.tipo-3 {
+  width: 35%;
+
+  &:last-child {
+    width: 30%;
+  }
+}
+
+.voce-form.tipo-3.auth {
+  width: 27%;
+
+  &:last-child {
+    width: 41%;
+  }
+}
+
+// Chekbox checkmark
+.contenitore-checkbox {
+  display: flex;
+  gap: 5px;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 20px 20px 20px 4px;
+  position: relative;
+
+  &.auth {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+
+.consent-checkbox {
+  display: none;
+
+  + label {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 1px;
+      width: 20px;
+      height: 20px;
+      border: 1.5px solid colore.$nero;
+      border-radius: 4px;
+      background-color: colore.$bianco;
+      transition:
+        background-color 0.3s,
+        box-shadow 0.3s;
+    }
+
+    &.required {
+      color: colore.$rosso;
+    }
+  }
+
+  &.auth + label {
+    padding-left: 40px;
+
+    &::before {
+      bottom: 9px;
+    }
+  }
+}
+
+.consent-checkbox:checked + label::before {
+  background-color: colore.$nero;
+}
+
+.consent-checkbox:checked + label::after {
+  content: "✔";
+  position: absolute;
+  left: 5px;
+  bottom: 1px;
+  color: colore.$bianco;
+  font-size: 1em;
+}
+
+.consent-checkbox.auth:checked + label::after {
+  bottom: 9px;
+}
+
+.consent-checkbox + label:hover::before {
+  box-shadow: 0 0 0 5px colore.$grigio-hover;
+}
+
+// For signup and login components
+.ctn-auth-form {
+  max-width: 460px;
+  margin: 20px 36px 60px;
+  width: 100%;
+}
+
+.logo-img-ctn {
+  display: flex;
+  flex-direction: row;
+  -moz-box-pack: start;
+  justify-content: flex-start;
+  -moz-box-align: center;
+  align-items: center;
+  height: 100px;
+  gap: 10px;
+
+  .logo-img-labair {
+    margin: auto 0;
+    width: 60px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-img-jordan {
+    margin: auto 0;
+    width: 50px;
+  }
+}
+
+// sf --> signup-form
+.sf-title {
+  font-size: 28px;
+  font-weight: normal;
+  line-height: 32px;
+  margin-top: 0px;
+  margin-bottom: 12px;
+}
+
+.sf-subtitle {
+  font-size: medium;
+  line-height: 24px;
+  margin: 12px 0px 20px;
+
+  .login {
+    margin-bottom: 20px;
+  }
+}
+
+.auth-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.contenitore-bottone-auth {
+  display: flex;
+  align-content: center;
+  margin-top: 23px;
+  flex-direction: row-reverse;
+}
 
 @media screen and (max-width: 959px) {
   .padding-principale {

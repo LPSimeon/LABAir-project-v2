@@ -1,43 +1,48 @@
-import { Component } from '@angular/core';
+import { afterNextRender, Component, inject, Injector } from '@angular/core';
 import { CartService } from '../services/cart.service';
-import { ProductData } from '../interfaces/productData';
 import { NgForm } from '@angular/forms';
-import { CheckoutData } from '../interfaces/checkoutData';
+import { ShippingData } from '../interfaces/shippingData';
 import { PaymentData } from '../interfaces/paymentData';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { cc_number_format } from '../utils/string-utils';
 import { cc_expires_format } from '../utils/string-utils';
 import { CartItem } from '../interfaces/cartItem';
 import { OrderService } from '../services/order.service';
 import { Order } from '../interfaces/order';
+import { AuthService } from '../services/auth.service';
 
 @Component({
     selector: 'app-checkout',
     standalone: false,
     templateUrl: './checkout.component.html',
-    styleUrl: './checkout.component.scss'
+    styleUrl: './checkout.component.scss',
 })
 export class CheckoutComponent {
-    constructor(private cartService: CartService, private orderService: OrderService, private router: Router) { }
+    // far funzionare il checkout anche se sei ospite, se loggato i valori di email, nome e cognome devono essere riempiti in automatico (forse da estrarre nel token)
+    constructor(
+        private authService: AuthService,
+        private cartService: CartService,
+        private orderService: OrderService,
+    ) {}
+
+    private injector = inject(Injector);
 
     cartItems: CartItem[] = [];
     cartSubTotal: number = 0;
 
-    shippingData: CheckoutData = {
-        email: "",
-        name: "",
-        surname: "",
-        address: "",
-        cap: "",
-        city: "",
-        country: "Italia",
-        phone: ""
+    shippingData: ShippingData = {
+        email: '',
+        nome: '',
+        cognome: '',
+        indirizzo: '',
+        cap: '',
+        citta: '',
+        paese: 'Italia',
+        tel: '',
     };
     paymentData: PaymentData = {
-        method: "",
-        cardNumber: "",
-        cardDate: ""
+        method: '',
+        cardNumber: '',
+        cardDate: '',
     };
 
     popupFlag1: boolean = false;
@@ -50,60 +55,63 @@ export class CheckoutComponent {
     verifyFlag: boolean = false;
 
     cardImgFlag: boolean = false;
-    cardImgType: string = "";
+    cardImgType: string = '';
 
     ngOnInit() {
-        this.cartService.cart$.subscribe(items => {
+        const payload = this.authService.extractPayload();
+        if (payload) {
+            this.shippingData.email = payload.sub;
+            this.shippingData.nome = payload.nome;
+            this.shippingData.cognome = payload.cognome;
+        }
+
+        this.cartService.cart$.subscribe((items) => {
             this.cartItems = items;
         });
-        console.log("Checkout");
-        console.log("cartItems: ", this.cartItems);
+        console.log('Checkout');
+        console.log('cartItems: ', this.cartItems);
 
-        this.cartService.subtotal$.subscribe(subtotal => {
-            this.cartSubTotal = subtotal
+        this.cartService.subtotal$.subscribe((subtotal) => {
+            this.cartSubTotal = subtotal;
         });
 
-        this.cartService.setCheckoutState(true);
+        afterNextRender(
+            () => {
+                this.cartService.setCheckoutState(true);
+            },
+
+            { injector: this.injector },
+        );
 
         this.cardImgFlag = false;
-        this.cardImgType = "";
+        this.cardImgType = '';
     }
 
     // capire cosa e come portare alla sezione del pagamento
     saveShippingAddress(form: NgForm) {
-        if (form.valid)
-            this.paymentFlag = true;
+        if (form.valid) this.paymentFlag = true;
 
-        console.log("shippingData saved:", this.shippingData);
+        console.log('shippingData saved:', this.shippingData);
     }
 
     savePaymentMethod(form: NgForm) {
         if (form.valid) {
             this.paymentData = { ...this.paymentData, ...form.value };
             this.verifyFlag = true;
-
-            // console.log("Ordine pronto per verifica:", {
-            //     utente: this.shippingData,
-            //     pagamento: this.paymentData,
-            //     prodotti: this.cartItems
-            // });
         }
-
     }
 
     placeOrder() {
+        // removed id and data_ordine
         const oggettoFinale: Order = {
-            id: "",
-            utente: this.shippingData,
-            pagamento: this.paymentData,
-            prodotti: this.cartItems,
-            totale: this.cartSubTotal,
-            dataOrdine: new Date().toLocaleDateString()
-        }
+            dati_spedizione: this.shippingData,
+            pagamento: this.paymentData.method,
+            cart_items: this.authService.isLoggedIn()
+                ? undefined
+                : this.cartItems,
+        };
 
         this.orderService.placeNewOrder(oggettoFinale);
-
-        this.router.navigate(['/checkout/order-confirmed']);
     }
 
     // Method used to open the popups with the '?'
@@ -124,32 +132,29 @@ export class CheckoutComponent {
                 break;
 
             default:
-                console.log("Popup non trovato");
+                console.log('Popup non trovato');
         }
     }
 
     getItemTotalPrice(item: CartItem): number {
-        if (item.prezzo && item.quantita)
-            return item.prezzo * item.quantita;
-        else
-            return 0;
+        if (item.prezzo && item.quantita) return item.prezzo * item.quantita;
+        else return 0;
     }
 
     // Method used to remove non-numerical characters and format the card number with keyup event
     handleCardNumberKeyup(e: Event) {
         const input = e.target as HTMLInputElement;
-        let value = input.value;
 
         const formatted = cc_number_format(input.value);
 
         input.value = formatted;
         this.paymentData.cardNumber = formatted;
 
-        if (formatted[0] === "4") {
-            this.cardImgType = "visa";
+        if (formatted[0] === '4') {
+            this.cardImgType = 'visa';
             this.cardImgFlag = true;
-        } else if (formatted[0] === "5" || formatted[0] === "2") {
-            this.cardImgType = "mastercard";
+        } else if (formatted[0] === '5' || formatted[0] === '2') {
+            this.cardImgType = 'mastercard';
             this.cardImgFlag = true;
         } else {
             this.cardImgFlag = false;
@@ -167,8 +172,7 @@ export class CheckoutComponent {
     trimCardNumber(): string {
         if (this.paymentData.cardNumber)
             return this.paymentData.cardNumber.substring(0, 4);
-        else
-            return "";
+        else return '';
     }
 
     // Methods used to return to the inputs of the forms

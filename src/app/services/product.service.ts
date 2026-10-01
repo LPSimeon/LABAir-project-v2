@@ -6,54 +6,48 @@ import { Product } from '../interfaces/product';
 import { convertDashToSpace } from '../utils/string-utils';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class ProductService {
     // URL and enpoint
-    private apiProductsURL = "http://localhost:3000/prodotti";
+    private apiProductsURL = 'http://localhost:3000/prodotti';
 
-    constructor(private httpClient: HttpClient) { }
+    private apiBackendURL = 'http://localhost:8080/api/v1/scarpeList';
+
+    constructor(private httpClient: HttpClient) {}
 
     // HTTP method used to get all products from the json file without any query params
     getProducts(): Observable<Product[]> {
-        return this.httpClient.get<any>(this.apiProductsURL);
+        return this.httpClient.get<Product[]>(this.apiBackendURL);
     }
 
     // Method used in product-details component
     getProductBySlug(slug: string): Observable<Product | undefined> {
-        const nameToSearch = convertDashToSpace(slug);
-        console.log(nameToSearch);
-        return this.getProducts().pipe(
-            map(products => products.find(p =>
-                p.nome.toLowerCase() === nameToSearch
-            ))
-        );
+        return this.httpClient.get<Product>(`${this.apiBackendURL}/${slug}`);
     }
 
     // HTTP method used to get the products from the json file based on the query params (category, newProduct, Featured , sortBy --> asc or desc)
     getProductsByFilter(filters: ProductFilters): Observable<any[]> {
-        return this.httpClient.get<any[]>(this.apiProductsURL).pipe(
-            map(products => {
-
+        return this.httpClient.get<any[]>(this.apiBackendURL).pipe(
+            map((products) => {
                 let result = [...products];
 
                 // CATEGORY
                 if (filters.category) {
                     const formatted = convertDashToSpace(filters.category);
-                    result = result.filter(p =>
-                        p.categoria.toLowerCase() === formatted.toLowerCase()
+                    result = result.filter(
+                        (p) =>
+                            p.categoria.toLowerCase() ===
+                            formatted.toLowerCase(),
                     );
                 }
 
-                // if (filters.newProduct) {
-                //     result = result.filter(p => p.nuovo_arrivi === true);
-                // }
                 // BRAND (nel nome)
                 if (filters.name) {
                     const formatted = filters.name;
 
-                    result = result.filter(p =>
-                        p.nome.toLowerCase().includes(formatted)
+                    result = result.filter((p) =>
+                        p.nome.toLowerCase().includes(formatted),
                     );
                 }
                 // sorting options
@@ -79,7 +73,7 @@ export class ProductService {
                 }
 
                 return result;
-            })
+            }),
         );
     }
 }

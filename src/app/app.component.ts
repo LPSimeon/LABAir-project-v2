@@ -1,15 +1,23 @@
-import { Component, HostListener, Renderer2 } from '@angular/core';
+import { Component, DestroyRef, HostListener, Renderer2 } from '@angular/core';
 import { CartService } from './services/cart.service';
-
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter, map } from 'rxjs';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     standalone: false,
-    styleUrl: './app.component.scss'
+    styleUrl: './app.component.scss',
 })
 export class AppComponent {
-    constructor(private cartService: CartService, private renderer: Renderer2) { }
+    constructor(
+        private cartService: CartService,
+        private renderer: Renderer2,
+        private destroyRef: DestroyRef,
+        private router: Router,
+        private activatedRoute: ActivatedRoute,
+    ) {}
 
     title = 'lab-air-prova-2';
 
@@ -17,7 +25,7 @@ export class AppComponent {
     blurFlag2: boolean = false;
 
     checkoutFlag: boolean = false;
-
+    authFlag: boolean = false;
     /* When the user scrolls down, hide the navbar. When the user scrolls up, show the navbar */
     private mainScrollPos = window.pageYOffset;
     isHeaderVisible = true;
@@ -31,8 +39,7 @@ export class AppComponent {
 
         // Check if we're at the top of the page
         if (currentScrollPos <= 5) {
-
-            console.log(currentScrollPos);
+            // console.log(currentScrollPos);
             this.isHeaderVisible = true;
             this.isAtTop = true;
         } else if (this.mainScrollPos > currentScrollPos) {
@@ -49,32 +56,47 @@ export class AppComponent {
     }
 
     ngOnInit() {
-        // In order to activate the blur 
-        this.cartService.popupState$.subscribe(state => {
-            this.blurFlag2 = state.isOpen;
-
-            if (this.blurFlag2) {
-
-                // window.scrollTo(0, 0);
-                window.scrollTo({
-                    top: 0,
-                    left: 0,
-                    behavior: 'auto'
-                });
-                // In order to stop the scroll 
-                this.renderer.addClass(document.body, 'no-scroll');
-            } else {
-                // to remove the class of the body
-                this.renderer.removeClass(document.body, 'no-scroll');
-            }
-        });
-
-        this.cartService.checkoutState$.subscribe(state => {
-            Promise.resolve().then(() => {
+        // In order to change the header when we are in the Chekout
+        this.cartService.checkoutState$
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((state) => {
                 this.checkoutFlag = state;
             });
-        });
 
+        this.router.events
+            .pipe(
+                filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+                map(() => {
+                    let route = this.activatedRoute;
+                    while (route.firstChild) route = route.firstChild;
+                    return !!route.snapshot.data['hideHeaderFooter'];
+                }),
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe((hide) => {
+                this.authFlag = hide;
+            });
+
+        // In order to activate the blur
+        this.cartService.popupState$
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((state) => {
+                this.blurFlag2 = state.isOpen;
+
+                if (this.blurFlag2) {
+                    // window.scrollTo(0, 0);
+                    window.scrollTo({
+                        top: 0,
+                        left: 0,
+                        behavior: 'auto',
+                    });
+                    // In order to stop the scroll
+                    this.renderer.addClass(document.body, 'no-scroll');
+                } else {
+                    // to remove the class of the body
+                    this.renderer.removeClass(document.body, 'no-scroll');
+                }
+            });
     }
 
     // Method to receive the response of the header (hover)

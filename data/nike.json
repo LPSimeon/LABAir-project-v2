@@ -61,11 +61,9 @@
         "45"
       ],
       "colori_disponibili": [
-        "Nero/Giallo",
-        "Grigio/Blu",
-        "Bianco/Rosso",
-        "Verde",
-        "Blu"
+        "nero-giallo",
+        "grigio",
+        " rosso"
       ],
       "descrizione": "Le Nike React Infinity Run Flyknit sono progettate per la massima ammortizzazione e stabilità durante la corsa. Con tomaia in Flyknit per un comfort superiore.",
       "immagine": "images/Shoes/react-infinity-run-flyknit-black-yellow.png",

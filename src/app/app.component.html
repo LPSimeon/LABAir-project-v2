@@ -1,18 +1,22 @@
-<div
-  class="blur"
-  [class.active]="blurFlag1 || blurFlag2"
-  (click)="onBlurClick()"
-></div>
-<app-header
-  [class.header-all-hidden]="!isHeaderVisible && checkoutFlag == false"
-  [class.mini-header-hidden]="
-    isHeaderVisible && isAtTop == false && checkoutFlag == false
-  "
-  [class.disable-interaction]="blurFlag2"
-  [ngStyle]="{ position: checkoutFlag ? 'relative' : 'sticky' }"
-  (blurChange)="onBlurChange($event)"
-></app-header>
+@if (!authFlag) {
+  <div
+    class="blur"
+    [class.active]="blurFlag1 || blurFlag2"
+    (click)="onBlurClick()"
+  ></div>
+  <app-header
+    [class.header-all-hidden]="!isHeaderVisible && checkoutFlag == false"
+    [class.mini-header-hidden]="
+      isHeaderVisible && isAtTop == false && checkoutFlag == false
+    "
+    [class.disable-interaction]="blurFlag2"
+    [ngStyle]="{ position: checkoutFlag ? 'relative' : 'sticky' }"
+    (blurChange)="onBlurChange($event)"
+  ></app-header>
 
-<app-cart-popup *ngIf="blurFlag2"></app-cart-popup>
+  <app-cart-popup *ngIf="blurFlag2"></app-cart-popup>
+}
 <router-outlet />
-<app-footer></app-footer>
+@if (!authFlag) {
+  <app-footer></app-footer>
+}

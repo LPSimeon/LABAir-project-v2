@@ -30,7 +30,7 @@ export class ShoeListComponent {
 
             this.currentCategory = params['category'];
             this.currentSortBy = params['sortBy'];
-            // params['sortBy'] as 'newest' | 'priceAsc' | 'priceDesc'
+
             this.searchWord = convertDashToSpace(params['name']);
 
             if (this.searchWord === '' || this.searchWord === undefined)
@@ -43,9 +43,7 @@ export class ShoeListComponent {
                 category: this.currentCategory,
                 sortBy: this.currentSortBy!
             };
-            // If there's any category in the url, it'll run the call the specific products with the categories, if not all the products
 
-            // It loads all products if there aren't any filters
             if (!filters.name && !filters.category && !filters.sortBy) {
                 this.loadAllProducts();
                 return;

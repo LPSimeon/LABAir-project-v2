@@ -1,8 +1,8 @@
 export interface ProductData {
-    productId: number;
+    scarpa_id: number;
     nome: string;
     colore: string;
     prezzo: number;
     taglia: string;
-    img?: string;
+    img_scarpa_cover?: string;
 }

@@ -53,7 +53,7 @@
   }
 }
 
-/* Parte minivoci di "Aiuto" */
+/* Parte minivoci di "Aiuto" e "Account" */
 .titolo-voci {
   display: block;
 
@@ -80,23 +80,23 @@
   z-index: -1;
 
   ul {
-    p {
+    p,
+    button {
       color: colore.$grigio;
       text-align: left;
       padding-bottom: 8%;
       line-height: 150%;
-
-      // da mettere sulle voce del header
-      &:hover {
-        color: colore.$nero;
-      }
     }
   }
-
-  //   .titolo-voci {
-  //     font-size: 1.3em;
-  //     padding-bottom: 12px;
-  //   }
+  &.account button {
+    font-size: 0.75rem;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
+  &.account .margini-voci-header ul p {
+    padding-bottom: 9px;
+  }
 }
 
 // .voce-header {
@@ -119,15 +119,23 @@
   }
 
   ul {
-    p:hover {
+    p:hover,
+    button:hover {
       color: colore.$nero;
     }
   }
 }
 
 /* Per far comparire le voci di "Aiuto" del mini-header */
-nav ul li:nth-child(2):hover .contenitore-mini-voci {
-  height: 330px;
+nav ul li.li-dropdown:hover .contenitore-mini-voci {
+  &.aiuto {
+    height: 330px;
+  }
+
+  &.account {
+    height: 224px;
+  }
+
   opacity: 1;
   z-index: 100;
 }

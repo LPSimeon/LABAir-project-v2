@@ -42,7 +42,7 @@ export class HomeComponent implements AfterViewInit {
         this.productService.getProducts().subscribe(
             {
                 next: (data) => {
-                    console.log('Prodotti ricevuti dal servizio:', data);
+                    // console.log('Prodotti ricevuti dal servizio:', data);
                     this.shoeList.push(...data);
                     console.log('shoeList popolata:', this.shoeList);
                 },
@@ -79,10 +79,6 @@ export class HomeComponent implements AfterViewInit {
         // We set the values in the Maps
         this.disabledLeft.set(sliderIndex, isAtStart);
         this.disabledRight.set(sliderIndex, isAtEnd);
-
-        // DEBUGGING messages
-        // console.log(`Slider ${sliderIndex}: Contenuto: ${scrollContentWidth}px, Visibile: ${visibleWidth}px, Max Scroll: ${maxScrollPosition}px, Posizione: ${currentScrollPosition}px`);
-        // console.log(`Stato: Inizio: ${isAtStart}, Fine: ${isAtEnd}`);
     }
 
     scroll(sliderIndex: number, direction: 'left' | 'right') {

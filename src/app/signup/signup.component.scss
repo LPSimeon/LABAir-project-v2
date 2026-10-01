@@ -1,0 +1,61 @@
+@use "variables" as colore;
+
+#password-rules {
+  margin: -12px 0 0 12px; // per adesso -12px dovrebbe essere 20px
+  font-size: 12px;
+  width: 100%;
+
+  .pwd-rule {
+    margin: 8px 0;
+    display: flex;
+    -moz-box-align: center;
+    align-items: center;
+  }
+
+  p {
+    margin: 0 5px;
+    &.gray {
+      color: colore.$grigio2;
+    }
+
+    &.red {
+      color: colore.$rosso;
+    }
+
+    &.green {
+      color: colore.$verde-scuro;
+    }
+  }
+}
+
+.date-input-p {
+  font-size: 14px;
+  padding: 4px 10px 4px 12px;
+  line-height: 20px;
+  font-weight: 400;
+  font-style: normal;
+  text-transform: none;
+}
+
+// For birth date inputs error message
+.voce-form {
+  .vf-input-ctn {
+    &:has(.input-error) {
+      border-color: colore.$rosso;
+
+      label {
+        color: colore.$rosso;
+      }
+      &:hover {
+        border-color: colore.$rosso;
+      }
+
+      &:has(input[type="text"]:focus) {
+        border-color: colore.$rosso;
+        input[type="text"]:focus ~ label {
+          color: colore.$rosso;
+        }
+      }
+    }
+  }
+}

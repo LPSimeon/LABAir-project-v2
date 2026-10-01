@@ -1,4 +1,3 @@
-<!-- Da sistemare tutto -->
 <!-- modificare sia l'header che il footer -->
 <h1 class="titolo-checkout">Pagamento</h1>
 <main class="ctn-cc-main">
@@ -76,7 +75,7 @@
                       type="email"
                       autocomplete="off"
                       placeholder=" "
-                      pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
+                      pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
                     />
                     <label for="input-email">Email*</label>
                     <span
@@ -108,7 +107,7 @@
                     <input
                       id="input-name"
                       name="name"
-                      [(ngModel)]="shippingData.name"
+                      [(ngModel)]="shippingData.nome"
                       #name="ngModel"
                       class="input-form"
                       required
@@ -151,7 +150,7 @@
                     <input
                       id="input-surname"
                       name="surname"
-                      [(ngModel)]="shippingData.surname"
+                      [(ngModel)]="shippingData.cognome"
                       #surname="ngModel"
                       class="input-form"
                       required
@@ -196,7 +195,7 @@
                     <input
                       id="input-address"
                       name="address"
-                      [(ngModel)]="shippingData.address"
+                      [(ngModel)]="shippingData.indirizzo"
                       #address="ngModel"
                       class="input-form"
                       required
@@ -280,7 +279,7 @@
                     <input
                       id="input-city"
                       name="city"
-                      [(ngModel)]="shippingData.city"
+                      [(ngModel)]="shippingData.citta"
                       #city="ngModel"
                       class="input-form"
                       required
@@ -342,7 +341,7 @@
                     <input
                       id="input-phone"
                       name="phone"
-                      [(ngModel)]="shippingData.phone"
+                      [(ngModel)]="shippingData.tel"
                       #tel="ngModel"
                       class="input-form"
                       required
@@ -396,13 +395,13 @@
               <div class="sp-text-ctn">
                 <div class="sp-label">Indirizzo di spedizione</div>
                 <div class="sp-text">
-                  {{ shippingData.name }} {{ shippingData.surname }}
+                  {{ shippingData.nome }} {{ shippingData.cognome }}
                 </div>
-                <div class="sp-text">{{ shippingData.address }}</div>
+                <div class="sp-text">{{ shippingData.indirizzo }}</div>
                 <div class="sp-text">
-                  {{ shippingData.cap }} {{ shippingData.city }}
+                  {{ shippingData.cap }} {{ shippingData.citta }}
                 </div>
-                <div class="sp-text">{{ shippingData.phone }}</div>
+                <div class="sp-text">{{ shippingData.tel }}</div>
               </div>
               <div class="sp-text-ctn">
                 <div class="sp-label">Velocità di spedizione</div>
@@ -473,8 +472,12 @@
                 (ngSubmit)="savePaymentMethod(paymentForm)"
               >
                 <div class="contenitore-checkbox">
-                  <input type="checkbox" id="gift-card" />
-                  <label for="gift-card" class="font-1"
+                  <input
+                    type="checkbox"
+                    id="gift-card-checkbox"
+                    class="consent-checkbox"
+                  />
+                  <label for="gift-card-checkbox" class="font-1"
                     >Possiedi una gift card, un voucher o un codice
                     promozionale?
                   </label>
@@ -522,7 +525,7 @@
                       class="radio-button"
                       required
                       type="radio"
-                      value="carta"
+                      value="CARTA"
                     />
                     <label for="carta-credito-debito" class="font-1"
                       ><img
@@ -540,7 +543,7 @@
                       class="radio-button"
                       required
                       type="radio"
-                      value="paypal"
+                      value="PAYPAL"
                     />
                     <label for="paypal">
                       <img src="images/Logo/svg/logo-paypal.svg" alt="" />
@@ -555,7 +558,7 @@
                       required
                       class="radio-button"
                       type="radio"
-                      value="gpay"
+                      value="GPAY"
                     />
                     <label for="gpay">
                       <div class="bordo-gpay">
@@ -569,7 +572,7 @@
                 <div
                   id="contenitore-input-carta"
                   class="contenitore-form2 pagamento"
-                  *ngIf="paymentData.method === 'carta'"
+                  *ngIf="paymentData.method === 'CARTA'"
                 >
                   <div class="contenitore-testo-carta">
                     <p>Aggiungi carta</p>
@@ -584,7 +587,7 @@
                           [(ngModel)]="paymentData.cardNumber"
                           #card="ngModel"
                           class="input-form"
-                          [required]="paymentData.method === 'carta'"
+                          [required]="paymentData.method === 'CARTA'"
                           type="text"
                           autocomplete="off"
                           placeholder=" "
@@ -636,7 +639,7 @@
                           [(ngModel)]="paymentData.cardDate"
                           #date="ngModel"
                           class="input-form"
-                          [required]="paymentData.method === 'carta'"
+                          [required]="paymentData.method === 'CARTA'"
                           type="text"
                           autocomplete="off"
                           placeholder=" "
@@ -665,7 +668,7 @@
                           [(ngModel)]="paymentData.cardCVV"
                           #cvv="ngModel"
                           class="input-form"
-                          [required]="paymentData.method === 'carta'"
+                          [required]="paymentData.method === 'CARTA'"
                           type="text"
                           autocomplete="off"
                           placeholder=" "
@@ -735,7 +738,7 @@
               <div class="shipping-preview-ctn">
                 <div class="sp-text-ctn">
                   <div class="sp-label">Metodo di pagamento</div>
-                  @if (paymentData.method == "carta") {
+                  @if (paymentData.method == "CARTA") {
                     <div class="sp-text">
                       <span class="input-icon card summary visible">
                         <img
@@ -751,7 +754,7 @@
                     </div>
                   } @else {
                     <div class="sp-text">
-                      @if (paymentData.method == "paypal") {
+                      @if (paymentData.method == "PAYPAL") {
                         <span class="input-icon card summary visible">
                           <img
                             src="images/Logo/svg/logo-paypal.svg"
@@ -768,15 +771,15 @@
                     </div>
                   }
                 </div>
-                @if (paymentData.method == "carta") {
+                @if (paymentData.method == "CARTA") {
                   <div class="sp-text-ctn">
                     <div class="sp-label">Dettagli di fatturazione</div>
                     <div class="sp-text">
-                      {{ shippingData.name }} {{ shippingData.surname }}
+                      {{ shippingData.nome }} {{ shippingData.cognome }}
                     </div>
-                    <div class="sp-text">{{ shippingData.address }}</div>
+                    <div class="sp-text">{{ shippingData.indirizzo }}</div>
                     <div class="sp-text">
-                      {{ shippingData.cap }} {{ shippingData.city }}
+                      {{ shippingData.cap }} {{ shippingData.citta }}
                     </div>
                     <div class="sp-text">Italia</div>
                   </div>
@@ -898,7 +901,7 @@
                 ) {
                   <div class="item-checkout">
                     <div class="contenitore-img-piccolo">
-                      <img [src]="item.img" alt="X" />
+                      <img [src]="item.img_scarpa_cover" alt="X" />
                     </div>
                     <div class="dati-checkout-header">
                       <p>

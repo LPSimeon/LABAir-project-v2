@@ -10,8 +10,9 @@ export interface Product {
     colori_disponibili: string[];
 
     descrizione: string;
-    immagine: productImage;
+    immagine_cover: string;
+    immagini_scarpa: productImage[];
 
-    nuovo_arrivi?: boolean;
+    nuovi_arrivi?: boolean;
     best_seller: number;
 }

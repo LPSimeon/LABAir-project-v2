@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CartService } from '../services/cart.service';
-import { ProductData } from '../interfaces/productData';
 import { timer, Subscription } from 'rxjs';
 import { CartItem } from '../interfaces/cartItem';
 

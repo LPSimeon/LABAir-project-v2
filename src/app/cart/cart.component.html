@@ -9,8 +9,8 @@
             Spedizione gratuita per i Member
           </h2>
           Diventa Member Nike e approfitta della spedizione rapida e gratuita.
-          <a class="text-link" href="#">Unisciti a noi</a> o
-          <a class="text-link" href="#">Accedi</a>
+          <a class="text-link" routerLink="/home">Unisciti a noi</a> o
+          <a class="text-link" routerLink="/home">Accedi</a>
         </div>
         <!-- Dettagli del prodotto -->
         <header class="cc-header">
@@ -21,7 +21,10 @@
           <div class="ctn-cc-data">
             <div class="carrello-img-testo">
               <div class="contenitore-img-carrello">
-                <img [src]="item.img" alt="Immagine della scarpa selezionata" />
+                <img
+                  [src]="item.img_scarpa_cover"
+                  alt="Immagine della scarpa selezionata"
+                />
               </div>
               <div class="contenitore-testo-carrello">
                 <div class="dati-carrello">

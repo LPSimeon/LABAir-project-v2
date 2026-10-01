@@ -71,11 +71,12 @@
 
       <!-- Per il responsive mettere qua il div che fara da image gallery <div> -->
 
-      <!-- div contenente i link dei colori della scarpa -->
-      <!-- Sembra apposto -->
       <div id="colorway-picker-container">
         <ng-container
-          *ngFor="let colorway of selectedProduct?.colori_disponibili"
+          *ngFor="
+            let colorway of selectedProduct?.colori_disponibili;
+            let i = index
+          "
           ><a
             class="colorway-link"
             [routerLink]="[
@@ -89,7 +90,7 @@
             >
               <img
                 class="colorway-img"
-                [src]="selectedProduct.immagine[colorway][0]"
+                [src]="selectedProduct.immagini_scarpa[i].urls[0]"
                 alt="Image of the colorway"
                 loading="lazy"
               /></div
@@ -106,8 +107,6 @@
         >
       </div>
 
-      <!-- Mettere uno span che ha bordo rosso su taglie-misure che avverte di inserire una taglia -->
-      <!-- Taglie e misure -->
       <div class="taglie-misure" [class.warning]="isAlertVisible">
         <div
           *ngFor="let size of selectedProduct?.taglie_disponibili"
@@ -122,10 +121,8 @@
           /><label [for]="'taglia-' + size">EU {{ size }} </label>
         </div>
       </div>
-      <!-- Span messaggio "Selezionare una scarpa" -->
       <span id="no-scarpa" *ngIf="isAlertVisible">Selezionare la misura.</span>
 
-      <!-- Bottoni "Aggiungi al carrello" e "Aggiungi ai preferiti" -->
       <div class="contenitore-bottoni-grandi">
         <button
           id="bottone"
@@ -134,14 +131,12 @@
           type="button"
         >
           Aggiungi al carrello
-          <!-- <span class="ripple"></span> rimosso per il momento -->
         </button>
         <button class="bottone-grande expanded preferiti">
           Aggiungi ai preferiti
           <img loading="lazy" src="images/Icon/svg/cuore.svg" alt="" />
         </button>
       </div>
-      <!-- Mettere altri dettagli della scarpa -->
       <div class="product-description-ctn">
         <!-- Ritiro gratuito Opzione "Clicca e ritira" disponibile al pagamento Nike -->
         <p>{{ selectedProduct?.descrizione }}</p>
@@ -151,7 +146,6 @@
             Colore mostrato in foto:
             <strong>{{ selectedColorway }}</strong>
           </li>
-          <!-- <li>Stile: AH8050-002</li> dopo -->
         </ul>
       </div>
 
@@ -255,6 +249,5 @@
     </div>
   </div>
   <div class="spazio"></div>
-
   <div class="spazio"></div>
 </main>

@@ -1,4 +1,5 @@
 export interface productImage {
-    cover: string;
-    [key: string]: string | string[];
+    id: number;
+    colore: string;
+    urls: string[];
 }
