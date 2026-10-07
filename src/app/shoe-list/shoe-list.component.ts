@@ -8,10 +8,14 @@ import { convertDashToSpace, convertSpaceToDash } from '../utils/string-utils';
     selector: 'app-shoe-list',
     standalone: false,
     templateUrl: './shoe-list.component.html',
-    styleUrls: ['./shoe-list.component.scss']
+    styleUrls: ['./shoe-list.component.scss'],
 })
 export class ShoeListComponent {
-    constructor(private route: ActivatedRoute, private router: Router, private productService: ProductService) { }
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router,
+        private productService: ProductService,
+    ) {}
 
     // List of the products from the service
     productList: Product[] = [];
@@ -19,15 +23,14 @@ export class ShoeListComponent {
     currentCategory?: string;
     currentSortBy: 'newest' | 'priceAsc' | 'priceDesc' | null = null;
 
-    defaultColorway: string = "nero";
+    defaultColorway: string = 'nero';
 
-    searchWord: string = "";
+    searchWord: string = '';
     isSearchWordEmpty: boolean = false;
 
     ngOnInit() {
         // In order to get the query parameters
-        this.route.queryParams.subscribe(params => {
-
+        this.route.queryParams.subscribe((params) => {
             this.currentCategory = params['category'];
             this.currentSortBy = params['sortBy'];
 
@@ -35,13 +38,12 @@ export class ShoeListComponent {
 
             if (this.searchWord === '' || this.searchWord === undefined)
                 this.isSearchWordEmpty = true;
-            else
-                this.isSearchWordEmpty = false;
+            else this.isSearchWordEmpty = false;
 
             const filters: ProductFilters = {
                 name: this.searchWord,
                 category: this.currentCategory,
-                sortBy: this.currentSortBy!
+                sortBy: this.currentSortBy!,
             };
 
             if (!filters.name && !filters.category && !filters.sortBy) {
@@ -54,12 +56,12 @@ export class ShoeListComponent {
         });
 
         // It initialises every state category to false --> category closed
-        this.categories.forEach(cat => {
+        this.categories.forEach((cat) => {
             this.accordionStates[cat.id] = false;
         });
     }
 
-    // Method used to load all products 
+    // Method used to load all products
     loadAllProducts() {
         this.productService.getProducts().subscribe({
             next: (data) => {
@@ -67,8 +69,11 @@ export class ShoeListComponent {
                 this.productList = data;
             },
             error: (error) => {
-                console.error('Errore durante il recupero dei prodotti:', error);
-            }
+                console.error(
+                    'Errore durante il recupero dei prodotti:',
+                    error,
+                );
+            },
         });
     }
 
@@ -79,8 +84,11 @@ export class ShoeListComponent {
                 this.productList = data;
             },
             error: (error) => {
-                console.error('Errore durante il recupero dei prodotti filtrati:', error);
-            }
+                console.error(
+                    'Errore durante il recupero dei prodotti filtrati:',
+                    error,
+                );
+            },
         });
     }
 
@@ -114,7 +122,11 @@ export class ShoeListComponent {
     // Every categories
     categories = [
         { id: 'genere', name: 'Genere', content: 'Contenuto ...' },
-        { id: 'acquisto', name: 'Acquista per prezzo', content: 'Contenuto ...' },
+        {
+            id: 'acquisto',
+            name: 'Acquista per prezzo',
+            content: 'Contenuto ...',
+        },
         { id: 'sconto', name: 'Sconti e offerte', content: 'Contenuto ...' },
         { id: 'discount', name: 'Product Discounts', content: 'Contenuto ...' },
         { id: 'taglia', name: 'Taglia/Misura', content: 'Contenuto ...' },
@@ -136,7 +148,6 @@ export class ShoeListComponent {
         this.accordionStates[id] = !this.accordionStates[id];
     }
 
-
     // Flag used to show the sort options (Ordina per)
     isSortListVisible: boolean = false;
 
@@ -148,41 +159,42 @@ export class ShoeListComponent {
     isSortOptionApplied: boolean = false;
 
     chooseSortOption(sortOption: string) {
-        if (sortOption === "In evidenza" && this.isSearchWordEmpty) {
+        if (sortOption === 'In evidenza' && this.isSearchWordEmpty) {
             this.router.navigate(['/shoes'], {
-                queryParams: { sortBy: null, category: this.currentCategory }
-            })
-        } else if (sortOption === "In evidenza" && !this.isSearchWordEmpty) {
+                queryParams: { sortBy: null, category: this.currentCategory },
+            });
+        } else if (sortOption === 'In evidenza' && !this.isSearchWordEmpty) {
             this.router.navigate(['/shoes'], {
-                queryParams: { name: this.searchWord, sortBy: null, category: this.currentCategory }
+                queryParams: {
+                    name: this.searchWord,
+                    sortBy: null,
+                    category: this.currentCategory,
+                },
             });
         }
 
-        if (sortOption === "newest") {
+        if (sortOption === 'newest') {
             this.router.navigate(['/shoes'], {
                 queryParams: {
-                    sortBy: 'newest'
+                    sortBy: 'newest',
                 },
-                queryParamsHandling: 'merge'
-
+                queryParamsHandling: 'merge',
             });
         }
-        if (sortOption === "priceDesc") {
+        if (sortOption === 'priceDesc') {
             this.router.navigate(['/shoes'], {
                 queryParams: {
-                    sortBy: 'priceDesc'
+                    sortBy: 'priceDesc',
                 },
-                queryParamsHandling: 'merge'
-
+                queryParamsHandling: 'merge',
             });
         }
-        if (sortOption === "priceAsc") {
+        if (sortOption === 'priceAsc') {
             this.router.navigate(['/shoes'], {
                 queryParams: {
-                    sortBy: 'priceAsc'
+                    sortBy: 'priceAsc',
                 },
-                queryParamsHandling: 'merge'
-
+                queryParamsHandling: 'merge',
             });
         }
 

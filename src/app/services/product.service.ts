@@ -22,7 +22,7 @@ export class ProductService {
     }
 
     // Method used in product-details component
-    getProductBySlug(slug: string): Observable<Product | undefined> {
+    getProductBySlug(slug: string): Observable<Product> {
         return this.httpClient.get<Product>(`${this.apiBackendURL}/${slug}`);
     }
 

@@ -4,8 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { Product } from '../interfaces/product';
 import { ProductData } from '../interfaces/productData';
 import { CartService } from '../services/cart.service';
-import { capitalizeFirstLetter } from '../utils/string-utils';
-import { convertSpaceToDash } from '../utils/string-utils';
+import {
+    capitalizeFirstLetter,
+    convertDashToSpace,
+    convertSpaceToDash,
+} from '../utils/string-utils';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-product-details',
@@ -15,6 +19,7 @@ import { convertSpaceToDash } from '../utils/string-utils';
 })
 export class ProductDetailsComponent {
     constructor(
+        private title: Title,
         private route: ActivatedRoute,
         private productService: ProductService,
         private cartService: CartService,
@@ -26,6 +31,7 @@ export class ProductDetailsComponent {
     selectedIndex: number = 0;
     selectedShoeSize: string | null = null;
     defaultColorway: string = 'nero';
+    shoeSlug: string = '';
 
     currentDisplayImage: string = '';
 
@@ -39,9 +45,15 @@ export class ProductDetailsComponent {
             console.log('slug: ' + nameParam + ' color: ' + colorParam);
 
             if (nameParam) {
+                this.shoeSlug = convertDashToSpace(nameParam)
+                    .split(' ')
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' ');
+
                 this.productService.getProductBySlug(nameParam).subscribe({
                     next: (product) => {
                         this.selectedProduct = product;
+                        // console.log(this.selectedProduct);
                         this.selectedColorway =
                             colorParam || this.defaultColorway;
 
@@ -53,6 +65,10 @@ export class ProductDetailsComponent {
                         ].urls as string[]; // We use indexOf of colori_disponibili to assign the images of the selected colorway
 
                         this.currentDisplayImage = this.selectedCwImgs[0];
+
+                        this.title.setTitle(
+                            `Scarpa da ${this.selectedProduct?.categoria} ${this.shoeSlug} - LABAir`,
+                        );
                     },
                 });
             }
