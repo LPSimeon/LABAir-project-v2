@@ -34,6 +34,7 @@ export class CartComponent {
             if (data === null) return;
 
             this.cartItems = data;
+
             // console.log("cartItems: ", this.cartItems);
             // To show the message alert
             if (this.cartItems.length === 0) {

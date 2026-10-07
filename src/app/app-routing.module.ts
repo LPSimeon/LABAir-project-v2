@@ -11,27 +11,42 @@ import { SignupComponent } from './signup/signup.component';
 
 const routes: Routes = [
     { path: '', component: HomeComponent },
-    { path: 'home', component: HomeComponent },
-    { path: 'shoes', component: ShoeListComponent },
-    { path: 'shoes/:name', component: ShoeListComponent },
-    { path: 'product/s/:slug/:color', component: ProductDetailsComponent },
-    { path: 'cart', component: CartComponent },
+    { path: 'home', title: 'Home - LABAir', component: HomeComponent },
+    {
+        path: 'shoes',
+        title: 'Lista scarpe - LABAir',
+        component: ShoeListComponent,
+    },
+    {
+        path: 'shoes/:name',
+        title: 'Lista scarpe - LABAir',
+        component: ShoeListComponent,
+    },
+    {
+        path: 'product/s/:slug/:color',
+        component: ProductDetailsComponent,
+    },
+    { path: 'cart', title: 'Carrello - LABAir', component: CartComponent },
     {
         path: 'checkout',
+        title: 'Checkout - LABAir',
         component: CheckoutComponent,
     },
     {
         path: 'checkout/order-confirmed',
+        title: 'Ordine confermato - LABAir',
         component: OrderConfirmationComponent,
         data: { hideHeaderFooter: true },
     },
     {
         path: 'login',
+        title: 'Accedi - LABAir',
         component: LoginComponent,
         data: { hideHeaderFooter: true },
     },
     {
         path: 'signup',
+        title: 'Registrati - LABAir',
         component: SignupComponent,
         data: { hideHeaderFooter: true },
     },
