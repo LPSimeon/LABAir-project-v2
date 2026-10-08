@@ -75,7 +75,7 @@ main {
 .fd-btn-ctn {
   display: inline-flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
 }
 
 .filter-ctn {
@@ -158,6 +158,11 @@ main {
       }
     }
   }
+}
+
+.elevated-filters-ctn {
+  display: flex;
+  padding: 16px 24px 16px 24px;
 }
 
 .content-wrapper {
@@ -356,6 +361,12 @@ main {
 // Globalizzare questa sezione
 
 @media screen and (max-width: 959px) {
+  .elevated-filters-ctn {
+    display: flex;
+    opacity: 1;
+    visibility: visible;
+  }
+
   .ph-title {
     font-size: 1.25rem;
   }

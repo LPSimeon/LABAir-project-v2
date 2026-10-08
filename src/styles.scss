@@ -216,6 +216,28 @@ button.icon-button.cart:not(:disabled):hover {
   }
 }
 
+.nike-link.bianco {
+  background-color: colore.$bianco;
+  z-index: 1;
+  &:hover {
+    background-color: colore.$grigio-chiaro2;
+  }
+}
+
+.filter-btn {
+  height: 36px;
+  padding: 6px 16px;
+  margin-right: 6px;
+  border-radius: 30px;
+  border: 0.5px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  background: none;
+}
+
 // Utility class that expands the link to cover the entire container
 .link-overlay {
   position: absolute;

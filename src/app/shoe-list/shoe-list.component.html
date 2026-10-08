@@ -116,6 +116,60 @@
       </div>
     </div>
   </header>
+  <div
+    class="elevated-filters-ctn padding-principale"
+    style="border: 1px solid black"
+    [ngClass]="{
+      sticky: isHeaderSticky,
+      'scrolling-up': isHeaderSticky && isScrollingUp,
+    }"
+  >
+    <div class="fd-btn-ctn">
+      <button class="filter-btn" (click)="showFilters()">
+        <svg
+          aria-hidden="true"
+          class="icon-filter-ds"
+          focusable="false"
+          viewBox="0 0 24 24"
+          role="img"
+          width="24"
+          height="24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+          <path
+            stroke="#111111"
+            stroke-width="1.5px"
+            d="M21 8.25H10m-5.25 0H3m0 7.5h10.75m5 0H21m-2.25 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zM7.5 6a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z"
+            fill="none"
+          ></path>
+        </svg>
+        ({{ 2 }})
+      </button>
+      <button class="filter-btn" (click)="showFilters()">
+        Genere ({{ 2 }})
+      </button>
+      <button class="filter-btn" (click)="showFilters()">
+        Sport ({{ 2 }})
+      </button>
+      <button class="filter-btn" (click)="showFilters()">
+        Acquista per prezzo ({{ 2 }})
+      </button>
+      <button class="filter-btn" (click)="showFilters()">
+        Taglia/Misura ({{ 2 }})
+      </button>
+      <button class="filter-btn" (click)="showFilters()">
+        Colore ({{ 2 }})
+      </button>
+      <button class="filter-btn" (click)="showFilters()">
+        Sport ({{ 2 }})
+      </button>
+      <button class="filter-btn" (click)="showFilters()">
+        Brand ({{ 2 }})
+      </button>
+    </div>
+  </div>
 
   <main class="content-wrapper">
     <aside

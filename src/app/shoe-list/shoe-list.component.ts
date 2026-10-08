@@ -127,12 +127,8 @@ export class ShoeListComponent {
             name: 'Acquista per prezzo',
             content: 'Contenuto ...',
         },
-        { id: 'sconto', name: 'Sconti e offerte', content: 'Contenuto ...' },
-        { id: 'discount', name: 'Product Discounts', content: 'Contenuto ...' },
         { id: 'taglia', name: 'Taglia/Misura', content: 'Contenuto ...' },
         { id: 'colore', name: 'Colore', content: 'Contenuto ...' },
-        { id: 'altezza', name: 'Altezza scarpa', content: 'Contenuto ...' },
-        { id: 'collezione', name: 'Collezioni', content: 'Contenuto ...' },
         { id: 'sport', name: 'Sport', content: 'Contenuto ...' },
         { id: 'brand', name: 'Brand', content: 'Contenuto ...' },
         // ... N altre categorie
@@ -213,5 +209,11 @@ export class ShoeListComponent {
     // Method get the slug with the dashes instead of the spaces
     getProductSlug(name: string): string {
         return convertSpaceToDash(name).toLowerCase();
+    }
+
+    isFilterVoiceVisible: boolean = false;
+    showFilters() {
+        this.isFilterVoiceVisible = !this.isFilterVoiceVisible;
+        console.log('AO');
     }
 }
