@@ -161,8 +161,9 @@ main {
 }
 
 .elevated-filters-ctn {
-  display: flex;
+  display: none;
   padding: 16px 24px 16px 24px;
+  overflow-x: auto;
 }
 
 .content-wrapper {
@@ -364,7 +365,7 @@ main {
   .elevated-filters-ctn {
     display: flex;
     opacity: 1;
-    visibility: visible;
+    overflow-x: visible;
   }
 
   .ph-title {
@@ -372,6 +373,9 @@ main {
   }
   .fd-btn-ctn {
     display: none;
+  }
+  .fd-btn-ctn.elevated-filters {
+    display: flex;
   }
 
   .left-nav-ctn {
