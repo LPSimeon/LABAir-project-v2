@@ -75,7 +75,7 @@ main {
 .fd-btn-ctn {
   display: inline-flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
 }
 
 .filter-ctn {
@@ -158,12 +158,6 @@ main {
       }
     }
   }
-}
-
-.elevated-filters-ctn {
-  display: none;
-  padding: 16px 24px 16px 24px;
-  overflow-x: auto;
 }
 
 .content-wrapper {
@@ -362,20 +356,11 @@ main {
 // Globalizzare questa sezione
 
 @media screen and (max-width: 959px) {
-  .elevated-filters-ctn {
-    display: flex;
-    opacity: 1;
-    overflow-x: visible;
-  }
-
   .ph-title {
     font-size: 1.25rem;
   }
   .fd-btn-ctn {
     display: none;
-  }
-  .fd-btn-ctn.elevated-filters {
-    display: flex;
   }
 
   .left-nav-ctn {
