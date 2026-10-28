@@ -160,6 +160,12 @@ main {
   }
 }
 
+.elevated-filters-ctn {
+  display: none;
+  padding: 16px 24px 16px 24px;
+  overflow-x: auto;
+}
+
 .content-wrapper {
   width: 100%;
   position: relative;
@@ -291,11 +297,11 @@ main {
 
   .pc-img-ctn {
     width: 100%;
-    height: 100%;
-    aspect-ratio: 1/ 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    // height: 100%;
+    aspect-ratio: 1 / 1;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
 
     background-color: colore.$grigio-bianco;
     img {
@@ -361,6 +367,10 @@ main {
   }
   .fd-btn-ctn {
     display: none;
+  }
+
+  .fd-btn-ctn.elevated-filters {
+    display: flex;
   }
 
   .left-nav-ctn {

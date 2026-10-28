@@ -122,6 +122,17 @@ export class HeaderComponent {
         this.isDeleteButtonVisible = false;
     }
 
+    isMenuActive: boolean = false;
+    showMenu() {
+        this.isMenuActive = true;
+        this.onMenuOpen();
+    }
+
+    hideMenu() {
+        this.isMenuActive = false;
+        this.onMenuClose();
+    }
+
     onBlurClick() {
         this.removeBlurBackground();
     }
