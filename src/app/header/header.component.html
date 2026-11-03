@@ -851,7 +851,10 @@
 
       <!-- Bottone preferiti e carrello -->
       <div id="contenitore-cerca">
-        <a class="icon-button header" routerLink="/shoes" title="Preferiti"
+        <a
+          class="icon-button header preferiti"
+          routerLink="/shoes"
+          title="Preferiti"
           ><img src="images/Icon/svg/cuore.svg" alt="❤️"
         /></a>
         <a
@@ -977,3 +980,10 @@
     <!-- chatbot -->
   </div>
 }
+
+<!-- hnav-menu -->
+<div class="hnav-menu" [class.visible]="isMenuActive">
+  Ciao
+  <button (click)="hideMenu()">AAo</button>
+</div>
+<!-- [class.hidden]="{ hidden: !isMenuActive }" -->

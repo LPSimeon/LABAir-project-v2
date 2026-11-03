@@ -125,6 +125,7 @@ export class HeaderComponent {
     isMenuActive: boolean = false;
     showMenu() {
         this.isMenuActive = true;
+        console.log(this.isMenuActive);
         this.onMenuOpen();
     }
 
