@@ -609,5 +609,13 @@ input[type="text"].search {
         transform 0.25s ease-in-out,
         visibility 0s;
     }
+
+    .close-btn-wrapper {
+      display: flex;
+      width: 100%;
+      padding: 6px 18px 6px 24px;
+      flex-flow: column wrap;
+      align-content: end;
+    }
   }
 }

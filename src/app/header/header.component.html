@@ -983,7 +983,10 @@
 
 <!-- hnav-menu -->
 <div class="hnav-menu" [class.visible]="isMenuActive">
-  Ciao
-  <button (click)="hideMenu()">AAo</button>
+  <div class="close-btn-wrapper">
+    <button class="icon-button nav-menu exit" (click)="hideMenu()">
+      <img src="/images/Icon/svg/chiudi.svg" alt="❌" />
+    </button>
+  </div>
 </div>
 <!-- [class.hidden]="{ hidden: !isMenuActive }" -->

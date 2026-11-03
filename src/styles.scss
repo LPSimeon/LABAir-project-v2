@@ -186,6 +186,7 @@ details {
 }
 
 .icon-button.header:hover,
+.icon-button.nav-menu.exit:hover,
 button.icon-button.cart:not(:disabled):hover {
   background-color: colore.$grigio-chiaro1;
 }
