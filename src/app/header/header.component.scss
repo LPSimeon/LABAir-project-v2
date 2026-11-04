@@ -593,6 +593,7 @@ input[type="text"].search {
     right: 0;
     transform: translateX(100%);
     display: flex;
+    flex-flow: column wrap;
     width: 320px;
     height: 100vh;
     padding-top: 12px;
@@ -616,6 +617,22 @@ input[type="text"].search {
       padding: 6px 18px 6px 24px;
       flex-flow: column wrap;
       align-content: end;
+    }
+
+    // Brand links (Jordan & Converse)
+    .mobile-brand-menu {
+      padding: 24px 0px;
+
+      .brand-link {
+        color: colore.$nero;
+        display: flex;
+        align-items: center;
+        padding: 8px 24px 8px 30px;
+
+        p {
+          padding-left: 12px;
+        }
+      }
     }
   }
 }
