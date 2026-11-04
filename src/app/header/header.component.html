@@ -862,7 +862,7 @@
           id="btn-carrello"
           routerLink="/cart"
           title="Articoli carrello: {{ nProductCart }}"
-          ><img src="images/Icon/svg/carrello.svg" alt="Cart" /><span
+          ><img src="images/Icon/svg/carrello.svg" alt="🛒" /><span
             class="numero-carrello"
             >{{ nProductCart > 0 ? nProductCart : "" }}</span
           ></a
@@ -956,7 +956,7 @@
           class="icon-button header"
           id="btn-carrello"
           title="Articoli carrello: 1"
-          ><img src="images/Icon/svg/carrello.svg" alt="" /><span
+          ><img src="images/Icon/svg/carrello.svg" alt="🛒" /><span
             class="numero-carrello"
             >{{ nProductCart }}</span
           ></a
@@ -1011,5 +1011,33 @@
       </li>
     </ul>
   </nav>
+
+  <div class="user-item-wrapper">
+    <a routerLink="/shoes" class="icon-link"
+      ><img class="nav-icon" img src="images/Icon/svg/cuore.svg" alt="❤️" />
+      <p>Preferiti</p></a
+    >
+    <a routerLink="/cart" class="icon-link"
+      ><img class="nav-icon" src="images/Icon/svg/carrello.svg" alt="🛒" />
+      <p>Carrello</p></a
+    >
+    <!-- Da cambiare -->
+    <a routerLink="/shoes" class="icon-link"
+      ><img class="nav-icon" src="images/Icon/svg/scatola.svg" alt="📦" />
+      <p>Ordini</p></a
+    >
+    <a href="https://www.nike.com/it/retail" class="icon-link"
+      ><img class="nav-icon" src="images/Icon/svg/negozio.svg" alt="🏬" />
+      <p>Trova un negozio</p></a
+    >
+    <a href="https://www.nike.com/it/help" class="icon-link"
+      ><img
+        class="nav-icon"
+        src="images/Icon/svg/domanda-chiaro.svg"
+        alt="❓"
+      />
+      <p>Aiuto</p></a
+    >
+  </div>
 </div>
 <!-- [class.hidden]="{ hidden: !isMenuActive }" -->

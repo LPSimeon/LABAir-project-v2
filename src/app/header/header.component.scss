@@ -634,5 +634,21 @@ input[type="text"].search {
         }
       }
     }
+    .user-item-wrapper {
+      min-height: 248px;
+      padding: 24px 0px 150px;
+      align-items: flex-end;
+      .icon-link {
+        // color: colore.$nero;
+        -moz-box-align: center;
+        align-items: center;
+        display: flex;
+        min-height: 40px;
+        padding: 8px 24px 8px 30px;
+        .nav-icon {
+          margin-right: 12px;
+        }
+      }
+    }
   }
 }
