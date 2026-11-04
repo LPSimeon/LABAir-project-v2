@@ -21,8 +21,10 @@ export class AppComponent {
 
     title = 'lab-air-prova-2';
 
+    // Vedere se renderle private
     blurFlag1: boolean = false;
     blurFlag2: boolean = false;
+    hnavMenuFlag: boolean = false;
 
     checkoutFlag: boolean = false;
     authFlag: boolean = false;
@@ -90,13 +92,23 @@ export class AppComponent {
                         left: 0,
                         behavior: 'auto',
                     });
-                    // In order to stop the scroll
-                    this.renderer.addClass(document.body, 'no-scroll');
-                } else {
-                    // to remove the class of the body
-                    this.renderer.removeClass(document.body, 'no-scroll');
                 }
+
+                this.updateScrollLock();
             });
+    }
+
+    onHnavMenuChange(isOpen: boolean) {
+        this.hnavMenuFlag = isOpen;
+        this.updateScrollLock();
+    }
+
+    private updateScrollLock() {
+        if (this.blurFlag2 || this.hnavMenuFlag) {
+            this.renderer.addClass(document.body, 'no-scroll');
+        } else {
+            this.renderer.removeClass(document.body, 'no-scroll');
+        }
     }
 
     // Method to receive the response of the header (hover)

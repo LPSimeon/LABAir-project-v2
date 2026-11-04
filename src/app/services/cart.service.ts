@@ -50,7 +50,7 @@ export class CartService {
     ); // this one uses the cartItems channel to make this operation
     checkoutState$ = this.checkoutState.asObservable();
 
-    //To open the popup
+    // To open the popup
     openPopup(product: ProductData) {
         this.addItemToCart(product); // to store the selected product
 

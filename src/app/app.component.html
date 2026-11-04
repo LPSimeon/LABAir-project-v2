@@ -12,6 +12,7 @@
     [class.disable-interaction]="blurFlag2"
     [ngStyle]="{ position: checkoutFlag ? 'relative' : 'sticky' }"
     (blurChange)="onBlurChange($event)"
+    (hnavMenuChange)="onHnavMenuChange($event)"
   ></app-header>
 
   <app-cart-popup *ngIf="blurFlag2"></app-cart-popup>

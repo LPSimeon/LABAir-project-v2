@@ -52,6 +52,7 @@ export class HeaderComponent {
     }
 
     @Output() blurChange = new EventEmitter<boolean>();
+    @Output() hnavMenuChange = new EventEmitter<boolean>();
 
     onMenuOpen() {
         this.blurChange.emit(true);
@@ -65,6 +66,7 @@ export class HeaderComponent {
     isBlurActive: boolean = false;
     applyBlurBackground() {
         // this.isBlurActive = true;
+
         this.onMenuOpen();
     }
 
@@ -127,11 +129,13 @@ export class HeaderComponent {
         this.isMenuActive = true;
         console.log(this.isMenuActive);
         this.onMenuOpen();
+        this.hnavMenuChange.emit(true);
     }
 
     hideMenu() {
         this.isMenuActive = false;
         this.onMenuClose();
+        this.hnavMenuChange.emit(false);
     }
 
     onBlurClick() {
