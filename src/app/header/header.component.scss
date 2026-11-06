@@ -726,6 +726,26 @@ input[type="text"].search {
           }
         }
       }
+
+      .slide-out-content {
+        width: 320px;
+        padding: 24px 0px;
+
+        .slide-out-title {
+          min-height: 45px;
+          padding: 8px 24px 8px 36px;
+        }
+
+        .slide-out-links {
+          padding: 12px 0px 150px;
+
+          p {
+            width: 204px;
+            font-size: 1rem;
+            color: colore.$grigio;
+          }
+        }
+      }
     }
   }
 }
