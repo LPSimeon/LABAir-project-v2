@@ -134,8 +134,19 @@ export class HeaderComponent {
 
     hideMenu() {
         this.isMenuActive = false;
+        this.menuVoicesFlag = !this.menuVoicesFlag;
         this.onMenuClose();
         this.hnavMenuChange.emit(false);
+    }
+
+    menuVoicesFlag: boolean = false;
+    showMenuVoices() {
+        this.menuVoicesFlag = !this.menuVoicesFlag;
+    }
+
+    goBackToMenu() {
+        this.menuVoicesFlag = !this.menuVoicesFlag;
+        this.isMenuActive = true;
     }
 
     onBlurClick() {

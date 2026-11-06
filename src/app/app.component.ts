@@ -3,6 +3,7 @@ import { CartService } from './services/cart.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-root',
@@ -12,14 +13,13 @@ import { filter, map } from 'rxjs';
 })
 export class AppComponent {
     constructor(
+        private title: Title,
         private cartService: CartService,
         private renderer: Renderer2,
         private destroyRef: DestroyRef,
         private router: Router,
         private activatedRoute: ActivatedRoute,
     ) {}
-
-    title = 'lab-air-prova-2';
 
     // Vedere se renderle private
     blurFlag1: boolean = false;
@@ -58,6 +58,8 @@ export class AppComponent {
     }
 
     ngOnInit() {
+        this.title.setTitle('LABAir');
+
         // In order to change the header when we are in the Chekout
         this.cartService.checkoutState$
             .pipe(takeUntilDestroyed(this.destroyRef))

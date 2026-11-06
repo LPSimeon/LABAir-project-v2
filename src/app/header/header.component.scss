@@ -593,7 +593,6 @@ input[type="text"].search {
     right: 0;
     transform: translateX(100%);
     display: flex;
-    flex-direction: column;
     width: 320px;
     height: 100vh;
     padding-top: 12px;
@@ -611,6 +610,36 @@ input[type="text"].search {
         visibility 0s;
     }
 
+    button.mobile-menu-option,
+    button.previous-btn {
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+
+      &:hover {
+        color: colore.$grigio;
+
+        img {
+          filter: invert(50%) grayscale(100%);
+        }
+      }
+    }
+
+    .hnav-menu-col1,
+    .hnav-menu-col2 {
+      display: flex;
+      flex-direction: column;
+      flex: 0 0 320px;
+      transition: transform 0.25s ease-in-out;
+      //   visibility: hidden;
+    }
+
+    .hnav-menu-col1.visible {
+      transform: translateX(-320px);
+    }
+    .hnav-menu-col1.hidden {
+      transform: translateX(calc(-320px * 2));
+    }
     .close-btn-wrapper {
       display: flex;
       width: 100%;
@@ -624,11 +653,6 @@ input[type="text"].search {
       padding: 24px 0px;
     }
 
-    button.mobile-menu-option {
-      border: none;
-      background-color: transparent;
-    }
-
     .mobile-menu-option {
       -moz-box-align: center;
       align-items: center;
@@ -637,20 +661,11 @@ input[type="text"].search {
       justify-content: space-between;
       min-height: 45px;
       width: 100%;
-      cursor: pointer;
 
       padding: 8px 24px 8px 36px;
       h3 {
         font-weight: 500;
         font-size: 1.5rem;
-      }
-
-      &:hover {
-        color: colore.$grigio;
-
-        img {
-          filter: invert(50%) grayscale(100%);
-        }
       }
     }
 
@@ -682,6 +697,33 @@ input[type="text"].search {
         padding: 8px 24px 8px 30px;
         .nav-icon {
           margin-right: 12px;
+        }
+      }
+    }
+
+    .hnav-menu-col2 {
+      transform: translateX(320px);
+
+      &.visible {
+        transform: translateX(-320px);
+      }
+
+      .slide-out_controls {
+        -moz-box-align: center;
+        align-items: center;
+        display: flex;
+        height: 48px;
+        -moz-box-pack: justify;
+        justify-content: space-between;
+        padding: 6px 18px 6px 24px;
+
+        .previous-btn {
+          gap: 10px;
+          display: flex;
+          align-items: center;
+          p {
+            font-size: 1rem;
+          }
         }
       }
     }
