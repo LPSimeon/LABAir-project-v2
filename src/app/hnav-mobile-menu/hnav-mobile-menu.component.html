@@ -1,1 +1,126 @@
-<p>hnav-mobile-menu works!</p>
+<div class="hnav-menu" [class.visible]="mobileMenu.isOpen$ | async">
+  <div class="hnav-track" [class.shifted]="menuVoicesFlag">
+    <div class="hnav-menu-col1">
+      <div class="close-btn-wrapper">
+        <button class="icon-button nav-menu exit" (click)="hideMenu()">
+          <img src="/images/Icon/svg/chiudi.svg" alt="❌" />
+        </button>
+      </div>
+
+      @if (isUserLoggedIn) {
+        <button
+          class="mobile-menu-option"
+          (click)="showMenuVoices(userSection)"
+        >
+          <p>
+            <img
+              class="profile-image-class"
+              src="images/Icon/svg/utente.svg"
+              alt="👤"
+            />
+            Ciao, {{ username }}
+          </p>
+
+          <img src="images/Icon/svg/destra.svg" alt="➡️" />
+        </button>
+      }
+
+      <div class="main-menu-wrapper">
+        @for (s of sezioni; track s.id) {
+          <button class="mobile-menu-option" (click)="showMenuVoices(s)">
+            <h3>{{ s.label }}</h3>
+            <img src="images/Icon/svg/destra.svg" alt="➡️" />
+          </button>
+        }
+      </div>
+
+      <!-- qui incolla invariati: <nav class="mobile-brand-menu"> e .user-item-wrapper -->
+      <nav>
+        <ul class="mobile-brand-menu">
+          <li>
+            <a class="brand-link" routerLink="/shoes">
+              <img
+                src="images/Logo/svg/logo-jordan-piccolo.svg"
+                alt="Logo del sito Jordan"
+              />
+              <p>Jordan</p>
+            </a>
+          </li>
+          <li>
+            <a class="brand-link" routerLink="/shoes">
+              <img
+                src="images/Logo/svg/logo-converse-piccolo.svg"
+                alt="Logo del sito Converse"
+              />
+              <p>Converse</p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="user-item-wrapper">
+        <a routerLink="/shoes" class="icon-link"
+          ><img class="nav-icon" img src="images/Icon/svg/cuore.svg" alt="❤️" />
+          <p>Preferiti</p></a
+        >
+        <a routerLink="/cart" class="icon-link"
+          ><img class="nav-icon" src="images/Icon/svg/carrello.svg" alt="🛒" />
+          <p>Carrello</p></a
+        >
+        <!-- Da cambiare -->
+        <a routerLink="/shoes" class="icon-link"
+          ><img class="nav-icon" src="images/Icon/svg/scatola.svg" alt="📦" />
+          <p>Ordini</p></a
+        >
+        <a href="https://www.nike.com/it/retail" class="icon-link"
+          ><img class="nav-icon" src="images/Icon/svg/negozio.svg" alt="🏬" />
+          <p>Trova un negozio</p></a
+        >
+        <a href="https://www.nike.com/it/help" class="icon-link"
+          ><img
+            class="nav-icon"
+            src="images/Icon/svg/domanda-chiaro.svg"
+            alt="❓"
+          />
+          <p>Aiuto</p></a
+        >
+      </div>
+    </div>
+
+    <div class="hnav-menu-col2">
+      <div class="slide-out_controls">
+        <button class="previous-btn" (click)="goBackToMenu()">
+          <img src="images/Icon/svg/sinistra.svg" alt="⬅️" />
+          <p>Tutto</p>
+        </button>
+        <button class="icon-button nav-menu exit" (click)="hideMenu()">
+          <img src="/images/Icon/svg/chiudi.svg" alt="❌" />
+        </button>
+      </div>
+
+      @if (currentMenuVoice) {
+        <div class="slide-out-content">
+          <div class="slide-out-title mobile-menu-option">
+            <a href="/shoes">
+              <h3>{{ currentMenuVoice.label }}</h3></a
+            >
+          </div>
+          <div class="slide-out-links">
+            @for (v of currentMenuVoice.voci; track v.label) {
+              <a class="mobile-menu-option" [routerLink]="v.link"
+                ><p>{{ v.label }}</p></a
+              >
+            }
+
+            @if (currentMenuVoice.id === "utente") {
+              <button class="mobile-menu-option" (click)="logoutUser()">
+                <p>Esci</p>
+              </button>
+            }
+            <!-- <a class="mobile-menu-option" href="/shoes"><p>Nuovi arrivi</p></a
+          ><a class="mobile-menu-option" href="/shoes"><p>Best seller</p></a> -->
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

@@ -9,6 +9,7 @@ import { CartService } from '../services/cart.service';
 import { Router } from '@angular/router';
 import { convertSpaceToDash } from '../utils/string-utils';
 import { AuthService } from '../services/auth.service';
+import { MobileMenuService } from '../services/mobile-menu.service';
 @Component({
     selector: 'app-header',
     standalone: false,
@@ -20,6 +21,7 @@ export class HeaderComponent {
         private router: Router,
         private authService: AuthService,
         private cartService: CartService,
+        private mobileMenu: MobileMenuService,
     ) {}
 
     nProductCart: number = 0;
@@ -48,6 +50,15 @@ export class HeaderComponent {
             if (state && payload) {
                 this.username = payload.nome;
             }
+        });
+
+        this.mobileMenu.isOpen$.subscribe((open) => {
+            if (open) {
+                this.onMenuOpen();
+            } else {
+                this.onMenuClose();
+            }
+            this.hnavMenuChange.emit(open);
         });
     }
 
@@ -124,83 +135,8 @@ export class HeaderComponent {
         this.isDeleteButtonVisible = false;
     }
 
-    isMenuActive: boolean = false;
     showMenu() {
-        this.isMenuActive = true;
-        console.log(this.isMenuActive);
-        this.onMenuOpen();
-        this.hnavMenuChange.emit(true);
-    }
-
-    hideMenu() {
-        this.isMenuActive = false;
-        this.menuVoicesFlag = !this.menuVoicesFlag;
-        this.onMenuClose();
-        this.hnavMenuChange.emit(false);
-    }
-
-    userSection: Sezione = {
-        id: 'utente',
-        label: 'Il mio account',
-        voci: [
-            { label: 'Profilo', link: '/shoes' },
-            { label: 'Ordini', link: '/shoes' },
-            { label: 'Preferiti', link: '/shoes' },
-            { label: 'Esperienze', link: '/shoes' },
-            { label: 'Impostazioni account', link: '/shoes' },
-        ],
-    };
-
-    sezioni: Sezione[] = [
-        {
-            id: 'novita',
-            label: 'Novità',
-            voci: [
-                { label: 'Nuovi arrivi', link: '/shoes' },
-                { label: 'Best seller', link: '/shoes' },
-            ],
-        },
-        {
-            id: 'uomo',
-            label: 'Uomo',
-            voci: [
-                { label: 'Nuovi arrivi', link: '/shoes' },
-                { label: 'Scarpe', link: '/shoes' },
-            ],
-        },
-        {
-            id: 'donna',
-            label: 'Donna',
-            voci: [
-                { label: 'Nuovi arrivi', link: '/shoes' },
-                { label: 'Scarpe', link: '/shoes' },
-            ],
-        },
-        {
-            id: 'kids',
-            label: 'Kids',
-            voci: [
-                { label: 'Nuovi arrivi', link: '/shoes' },
-                { label: 'Scarpe', link: '/shoes' },
-            ],
-        },
-        {
-            id: 'outlet',
-            label: 'Outlet',
-            voci: [{ label: 'Scarpe', link: '/shoes' }],
-        },
-    ];
-
-    menuVoicesFlag: boolean = false;
-    currentMenuVoice: Sezione | null = null;
-    showMenuVoices(s: Sezione) {
-        this.currentMenuVoice = s;
-        this.menuVoicesFlag = !this.menuVoicesFlag;
-    }
-
-    goBackToMenu() {
-        this.menuVoicesFlag = !this.menuVoicesFlag;
-        this.isMenuActive = true;
+        this.mobileMenu.open();
     }
 
     onBlurClick() {
@@ -211,9 +147,4 @@ export class HeaderComponent {
         this.authService.logout();
         window.location.reload(); // to simulate refresh
     }
-}
-interface Sezione {
-    id: string;
-    label: string;
-    voci: { label: string; link: string }[];
 }

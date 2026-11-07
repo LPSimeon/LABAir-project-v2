@@ -3,6 +3,7 @@
     class="blur"
     [class.active]="blurFlag1 || blurFlag2"
     (click)="onBlurClick()"
+    [ngStyle]="{ 'z-index': hnavMenuFlag ? '55' : '40' }"
   ></div>
   <app-header
     [class.header-all-hidden]="!isHeaderVisible && checkoutFlag == false"
@@ -14,7 +15,7 @@
     (blurChange)="onBlurChange($event)"
     (hnavMenuChange)="onHnavMenuChange($event)"
   ></app-header>
-
+  <app-hnav-mobile-menu></app-hnav-mobile-menu>
   <app-cart-popup *ngIf="blurFlag2"></app-cart-popup>
 }
 <router-outlet />
