@@ -139,8 +139,62 @@ export class HeaderComponent {
         this.hnavMenuChange.emit(false);
     }
 
+    userSection: Sezione = {
+        id: 'utente',
+        label: 'Il mio account',
+        voci: [
+            { label: 'Profilo', link: '/shoes' },
+            { label: 'Ordini', link: '/shoes' },
+            { label: 'Preferiti', link: '/shoes' },
+            { label: 'Esperienze', link: '/shoes' },
+            { label: 'Impostazioni account', link: '/shoes' },
+        ],
+    };
+
+    sezioni: Sezione[] = [
+        {
+            id: 'novita',
+            label: 'Novità',
+            voci: [
+                { label: 'Nuovi arrivi', link: '/shoes' },
+                { label: 'Best seller', link: '/shoes' },
+            ],
+        },
+        {
+            id: 'uomo',
+            label: 'Uomo',
+            voci: [
+                { label: 'Nuovi arrivi', link: '/shoes' },
+                { label: 'Scarpe', link: '/shoes' },
+            ],
+        },
+        {
+            id: 'donna',
+            label: 'Donna',
+            voci: [
+                { label: 'Nuovi arrivi', link: '/shoes' },
+                { label: 'Scarpe', link: '/shoes' },
+            ],
+        },
+        {
+            id: 'kids',
+            label: 'Kids',
+            voci: [
+                { label: 'Nuovi arrivi', link: '/shoes' },
+                { label: 'Scarpe', link: '/shoes' },
+            ],
+        },
+        {
+            id: 'outlet',
+            label: 'Outlet',
+            voci: [{ label: 'Scarpe', link: '/shoes' }],
+        },
+    ];
+
     menuVoicesFlag: boolean = false;
-    showMenuVoices() {
+    currentMenuVoice: Sezione | null = null;
+    showMenuVoices(s: Sezione) {
+        this.currentMenuVoice = s;
         this.menuVoicesFlag = !this.menuVoicesFlag;
     }
 
@@ -157,4 +211,9 @@ export class HeaderComponent {
         this.authService.logout();
         window.location.reload(); // to simulate refresh
     }
+}
+interface Sezione {
+    id: string;
+    label: string;
+    voci: { label: string; link: string }[];
 }

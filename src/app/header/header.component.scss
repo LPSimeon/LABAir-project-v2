@@ -667,6 +667,19 @@ input[type="text"].search {
         font-weight: 500;
         font-size: 1.5rem;
       }
+
+      p {
+        display: flex;
+        align-items: center;
+        font-size: 1rem;
+
+        .profile-image-class {
+          margin-right: 12px;
+          border-radius: 24px;
+          width: 36px;
+          height: 36px;
+        }
+      }
     }
 
     // Brand links (Jordan & Converse)

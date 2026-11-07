@@ -990,23 +990,44 @@
       </button>
     </div>
 
-    <div class="main-menu-wrapper">
-      <button class="mobile-menu-option" (click)="showMenuVoices()">
-        <h3>Novità</h3>
-        <img src="images/Icon/svg/destra.svg" alt="➡️" /></button
-      ><button class="mobile-menu-option" (click)="showMenuVoices()">
-        <h3>Uomo</h3>
-        <img src="images/Icon/svg/destra.svg" alt="➡️" /></button
-      ><button class="mobile-menu-option" (click)="showMenuVoices()">
-        <h3>Donna</h3>
-        <img src="images/Icon/svg/destra.svg" alt="➡️" /></button
-      ><button class="mobile-menu-option" (click)="showMenuVoices()">
-        <h3>Kids</h3>
-        <img src="images/Icon/svg/destra.svg" alt="➡️" /></button
-      ><button class="mobile-menu-option" (click)="showMenuVoices()">
-        <h3>Outlet</h3>
+    @if (isUserLoggedIn) {
+      <button class="mobile-menu-option" (click)="showMenuVoices(userSection)">
+        <p>
+          <img
+            class="profile-image-class"
+            src="images/Icon/svg/utente.svg"
+            alt="👤"
+          />
+          Ciao, {{ username }}
+        </p>
+
         <img src="images/Icon/svg/destra.svg" alt="➡️" />
       </button>
+    }
+
+    <div class="main-menu-wrapper">
+      @for (s of sezioni; track s.id) {
+        <button class="mobile-menu-option" (click)="showMenuVoices(s)">
+          <h3>{{ s.label }}</h3>
+          <img src="images/Icon/svg/destra.svg" alt="➡️" />
+        </button>
+      }
+      <!-- <button class="mobile-menu-option" (click)="showMenuVoices('novità')">
+        <h3>Novità</h3>
+        <img src="images/Icon/svg/destra.svg" alt="➡️" /></button
+      ><button class="mobile-menu-option" (click)="showMenuVoices('uomo')">
+        <h3>Uomo</h3>
+        <img src="images/Icon/svg/destra.svg" alt="➡️" /></button
+      ><button class="mobile-menu-option" (click)="showMenuVoices('donna')">
+        <h3>Donna</h3>
+        <img src="images/Icon/svg/destra.svg" alt="➡️" /></button
+      ><button class="mobile-menu-option" (click)="showMenuVoices('kids')">
+        <h3>Kids</h3>
+        <img src="images/Icon/svg/destra.svg" alt="➡️" /></button
+      ><button class="mobile-menu-option" (click)="showMenuVoices('outlet')">
+        <h3>Outlet</h3>
+        <img src="images/Icon/svg/destra.svg" alt="➡️" />
+      </button> -->
     </div>
 
     <nav>
@@ -1070,15 +1091,30 @@
         <img src="/images/Icon/svg/chiudi.svg" alt="❌" />
       </button>
     </div>
-    <div class="slide-out-content">
-      <div class="slide-out-title mobile-menu-option">
-        <a href="/shoes"> <h3>Novità</h3></a>
+    @if (currentMenuVoice) {
+      <div class="slide-out-content">
+        <div class="slide-out-title mobile-menu-option">
+          <a href="/shoes">
+            <h3>{{ currentMenuVoice.label }}</h3></a
+          >
+        </div>
+        <div class="slide-out-links">
+          @for (v of currentMenuVoice.voci; track v.label) {
+            <a class="mobile-menu-option" [routerLink]="v.link"
+              ><p>{{ v.label }}</p></a
+            >
+          }
+
+          @if (currentMenuVoice.id === "utente") {
+            <button class="mobile-menu-option" (click)="logoutUser()">
+              <p>Esci</p>
+            </button>
+          }
+          <!-- <a class="mobile-menu-option" href="/shoes"><p>Nuovi arrivi</p></a
+          ><a class="mobile-menu-option" href="/shoes"><p>Best seller</p></a> -->
+        </div>
       </div>
-      <div class="slide-out-links">
-        <a class="mobile-menu-option" href="/shoes"><p>Nuovi arrivi</p></a
-        ><a class="mobile-menu-option" href="/shoes"><p>Best seller</p></a>
-      </div>
-    </div>
+    }
   </div>
 </div>
 <!-- [class.hidden]="{ hidden: !isMenuActive }" -->
