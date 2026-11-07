@@ -17,6 +17,7 @@ import { OrderConfirmationComponent } from './order-confirmation/order-confirmat
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { authInterceptor } from './auth.interceptor';
+import { HnavMobileMenuComponent } from './hnav-mobile-menu/hnav-mobile-menu.component';
 
 @NgModule({
     declarations: [
@@ -32,6 +33,7 @@ import { authInterceptor } from './auth.interceptor';
         OrderConfirmationComponent,
         LoginComponent,
         SignupComponent,
+        HnavMobileMenuComponent,
     ],
     imports: [BrowserModule, AppRoutingModule, FormsModule],
     providers: [provideHttpClient(withInterceptors([authInterceptor]))],
